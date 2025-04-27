@@ -29,18 +29,9 @@
         </columns>
     </TableView>
 
-    <!-- Form to Add a Supplier -->
-    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Label text="Name:"/>
-        <TextField fx:id="nomField" promptText="Enter name" HBox.hgrow="ALWAYS"/>
-
-        <Label text="Phone Number:"/>
-        <TextField fx:id="numField" promptText="Enter phone number" HBox.hgrow="ALWAYS"/>
-    </HBox>
-
     <!-- CRUD Buttons -->
     <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Button text="Add" onAction="#addSupplier" styleClass="button-green"/>
+        <Button text="Add" onAction="#openAddWindow" styleClass="button-green"/>
         <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue"/>
         <Button text="Delete" onAction="#deleteSelectedSupplier" styleClass="button-red"/>
     </HBox>

@@ -1,4 +1,65 @@
 package controllers;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import entities.fournisseur;
+import services.FournisseurService;
+
 public class AjouterFournisseurController {
+
+    @FXML private TextField nomField;
+    @FXML private TextField numField;
+    @FXML private Label messageLabel;
+
+    private final FournisseurService fournisseurService = new FournisseurService();
+
+    /**
+     * Add a new supplier.
+     */
+    @FXML
+    public void ajouterFournisseur() {
+        String name = nomField.getText();
+        String phoneStr = numField.getText();
+
+        // Validate that all fields are filled
+        if (name.isEmpty() || phoneStr.isEmpty()) {
+            afficherMessage("All fields are required.", "red");
+            return;
+        }
+
+        try {
+            // Parse the phone number field
+            int phone = Integer.parseInt(phoneStr);
+
+            // Create a new supplier object
+            fournisseur supplier = new fournisseur(name, phone);
+
+            // Add the supplier to the database
+            fournisseurService.ajouterF(supplier);
+
+            // Display success message
+            afficherMessage("Supplier added successfully!", "green");
+
+            // Close the modal window after adding
+            Stage stage = (Stage) messageLabel.getScene().getWindow();
+            stage.close();
+
+        } catch (NumberFormatException e) {
+            // Handle invalid numeric input
+            afficherMessage("The 'Phone Number' field must be an integer.", "red");
+        }
+    }
+
+    /**
+     * Display a message in the interface.
+     *
+     * @param message The message to display.
+     * @param color   The text color ("green" or "red").
+     */
+    private void afficherMessage(String message, String color) {
+        messageLabel.setText(message);
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+    }
 }

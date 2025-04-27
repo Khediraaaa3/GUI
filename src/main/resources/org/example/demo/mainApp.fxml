@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
@@ -8,22 +9,26 @@
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
-    <spacing>20</spacing>
+    <spacing>15</spacing>
 
     <!-- Header -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Dashboard - Materials and Suppliers Management" styleClass="label-title"/>
+    <HBox spacing="10">
+        <ImageView fx:id="logoImage" fitWidth="50" fitHeight="50" preserveRatio="true" pickOnBounds="true" />
+        <Label text="Dashboard - Materials and Suppliers Management" styleClass="label-title" />
     </HBox>
 
-    <!-- Description -->
-    <Label text="Choose a section to manage:" styleClass="label-message"/>
+    <!-- Welcome Message -->
+    <StackPane VBox.vgrow="ALWAYS">
+        <Label text="Welcome!" styleClass="label-title" alignment="CENTER" />
+    </StackPane>
 
-    <!-- Buttons -->
-    <HBox spacing="15" alignment="CENTER">
-        <Button text="Manage Materials" onAction="#openMaterialsInterface" styleClass="button-green"/>
-        <Button text="Manage Suppliers" onAction="#openSuppliersInterface" styleClass="button-blue"/>
-    </HBox>
+    <!-- Buttons for Navigation -->
+    <VBox alignment="CENTER" spacing="10">
+        <Button text="Manage Suppliers" onAction="#openSuppliersInterface" styleClass="button-green"/>
+        <Button text="Manage Materials" onAction="#openMaterialsInterface" styleClass="button-blue"/>
+        <Button text="Exit Application" onAction="#exitApplication" styleClass="button-red"/>
+    </VBox>
 
     <!-- Notifications -->
-    <Label fx:id="notificationLabel" text="" styleClass="label-message"/>
+    <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
 </VBox>

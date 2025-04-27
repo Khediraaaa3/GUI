@@ -21,8 +21,6 @@ public class FournisseurController {
     @FXML private TableColumn<fournisseur, String> nomColumn;
     @FXML private TableColumn<fournisseur, Integer> numColumn;
 
-    @FXML private TextField nomField;
-    @FXML private TextField numField;
     @FXML private TextField searchField;
     @FXML private Label notificationLabel;
 
@@ -53,29 +51,26 @@ public class FournisseurController {
     }
 
     /**
-     * Add a new supplier.
+     * Open the Add Supplier window.
      */
     @FXML
-    public void addSupplier() {
-        String name = nomField.getText();
-        String phoneStr = numField.getText();
-
-        if (name.isEmpty() || phoneStr.isEmpty()) {
-            showAlert("Error", "All fields are required!");
-            return;
-        }
-
+    public void openAddWindow() {
         try {
-            int phone = Integer.parseInt(phoneStr);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/ajouterFournisseur.fxml"));
+            Parent root = loader.load();
 
-            fournisseur supplier = new fournisseur(name, phone);
-            fournisseurService.ajouterF(supplier);
-            refreshTable();
-            clearFields();
-            displayNotification("Supplier added successfully.");
+            Stage stage = new Stage();
+            stage.setTitle("Add New Supplier");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Make it a modal window
+            stage.showAndWait();
 
-        } catch (NumberFormatException e) {
-            showAlert("Error", "The 'Phone Number' field must be an integer.");
+            refreshTable(); // Refresh the table after adding
+            displayNotification("Supplier added successfully.","green");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            displayNotification("Error loading the add supplier interface.", "red");
         }
     }
 
@@ -104,7 +99,7 @@ public class FournisseurController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Supplier updated successfully.");
+            displayNotification("Supplier updated successfully.","green");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +119,7 @@ public class FournisseurController {
 
         fournisseurService.supprimerF(selectedSupplier.getId_fourn());
         refreshTable();
-        displayNotification("Supplier deleted successfully.");
+        displayNotification("Supplier deleted successfully.","green");
     }
 
     /**
@@ -142,7 +137,7 @@ public class FournisseurController {
         }
 
         fournisseurTable.setItems(filteredList);
-        displayNotification("Results filtered.");
+        displayNotification("Results filtered.","green");
     }
 
     /**
@@ -152,15 +147,7 @@ public class FournisseurController {
     public void resetFilter() {
         searchField.clear();
         refreshTable();
-        displayNotification("Filter reset.");
-    }
-
-    /**
-     * Clear all input fields.
-     */
-    private void clearFields() {
-        nomField.clear();
-        numField.clear();
+        displayNotification("Filter reset.","green");
     }
 
     /**
@@ -181,10 +168,11 @@ public class FournisseurController {
      * Display a temporary notification.
      *
      * @param message The message to display.
+     * @param color   The text color ("green" or "red").
      */
-    private void displayNotification(String message) {
+    private void displayNotification(String message, String color) {
         notificationLabel.setText(message);
-        notificationLabel.setStyle("-fx-text-fill: green;");
+        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> notificationLabel.setText(""));

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterFournisseurController" stylesheets="@styles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <spacing>15</spacing>
+
+    <!-- Title -->
+    <Label text="Add New Supplier" styleClass="label-title" VBox.vgrow="NEVER"/>
+
+    <!-- Form to Add a Supplier -->
+    <GridPane hgap="10" vgap="10" alignment="CENTER">
+        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="nomField" promptText="Enter name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Phone Number:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="numField" promptText="Enter phone number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- Add Button -->
+    <HBox spacing="10" alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
+        <Button text="Add" onAction="#ajouterFournisseur" styleClass="button-green"/>
+    </HBox>
+
+    <!-- Notifications -->
+    <Label fx:id="messageLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+</VBox>

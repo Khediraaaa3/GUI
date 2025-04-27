@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MaterielController" stylesheets="@styles.css">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainAppController" stylesheets="@styles.css">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
     <spacing>15</spacing>
 
-    <!-- Title -->
-    <Label text="Material Management" styleClass="label-title" VBox.vgrow="NEVER"/>
-
-    <!-- Search Bar -->
-    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Label text="Search:"/>
-        <TextField fx:id="searchField" promptText="Enter name or type" HBox.hgrow="ALWAYS"/>
-        <Button text="Search" onAction="#filterMaterials" styleClass="button-green"/>
-        <Button text="Reset" onAction="#resetFilter" styleClass="button-blue"/>
+    <!-- Header -->
+    <HBox spacing="10">
+        <ImageView fx:id="logoImage" fitWidth="50" fitHeight="50" preserveRatio="true" pickOnBounds="true" />
+        <Label text="Dashboard - Materials and Suppliers Management" styleClass="label-title" />
     </HBox>
 
-    <!-- Table to Display Materials -->
-    <TableView fx:id="materielTable" VBox.vgrow="ALWAYS" styleClass="table-view">
-        <columns>
-            <TableColumn text="Name" prefWidth="150" fx:id="nomColumn"/>
-            <TableColumn text="Type" prefWidth="150" fx:id="typeColumn"/>
-            <TableColumn text="Total Quantity" prefWidth="120" fx:id="qteTotColumn"/>
-            <TableColumn text="Available Quantity" prefWidth="150" fx:id="qteDispColumn"/>
-            <TableColumn text="Location ID" prefWidth="80" fx:id="idLieuColumn"/>
-            <TableColumn text="Supplier ID" prefWidth="120" fx:id="idFournColumn"/>
-        </columns>
-    </TableView>
+    <!-- Welcome Message -->
+    <StackPane VBox.vgrow="ALWAYS">
+        <Label text="Welcome!" styleClass="label-title" alignment="CENTER" />
+    </StackPane>
 
-    <!-- CRUD Buttons -->
-    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Button text="Add" onAction="#openAddWindow" styleClass="button-green"/>
-        <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue"/>
-        <Button text="Delete" onAction="#deleteSelectedMaterial" styleClass="button-red"/>
-    </HBox>
+    <!-- Buttons for Navigation -->
+    <VBox alignment="CENTER" spacing="10">
+        <HBox spacing="10">
+            <ImageView fx:id="manageSuppliersIcon" fitWidth="30" fitHeight="30" preserveRatio="true" pickOnBounds="true" />
+            <Button text="Manage Suppliers" onAction="#openSuppliersInterface" styleClass="button-green"/>
+        </HBox>
+        <HBox spacing="10">
+            <ImageView fx:id="manageMaterialsIcon" fitWidth="30" fitHeight="30" preserveRatio="true" pickOnBounds="true" />
+            <Button text="Manage Materials" onAction="#openMaterialsInterface" styleClass="button-blue"/>
+        </HBox>
+        <HBox spacing="10">
+            <ImageView fx:id="exitIcon" fitWidth="30" fitHeight="30" preserveRatio="true" pickOnBounds="true" />
+            <Button text="Exit Application" onAction="#exitApplication" styleClass="button-red"/>
+        </HBox>
+    </VBox>
 
     <!-- Notifications -->
     <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
