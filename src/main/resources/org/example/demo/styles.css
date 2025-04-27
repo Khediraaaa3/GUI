@@ -36,9 +36,10 @@
 }
 
 .button-blue:hover {
+    -fx-animated: 1;
     -fx-background-color: #2980b9; /* Slightly darker blue on hover */
 }
 
 .button-red:hover {
-    -fx-background-color: #78150a; /* Slightly darker red on hover */
+    -fx-background-color: #8a0b0b; /* Slightly darker red on hover */
 }

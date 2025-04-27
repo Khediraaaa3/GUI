@@ -23,7 +23,7 @@
     </StackPane>
 
     <!-- Buttons for Navigation -->
-    <VBox alignment="CENTER" spacing="10">
+    <VBox spacing="10" alignment="CENTER">
         <Button text="Manage Suppliers" onAction="#openSuppliersInterface" styleClass="button-green"/>
         <Button text="Manage Materials" onAction="#openMaterialsInterface" styleClass="button-blue"/>
         <Button text="Exit Application" onAction="#exitApplication" styleClass="button-red"/>
