@@ -1,0 +1,45 @@
+/* Style global */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f4f4;
+}
+
+/* Titre */
+.label-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Tableau */
+.table-view {
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-background-color: white;
+}
+
+/* Boutons */
+.button {
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.button-green {
+    -fx-background-color: #4CAF50;
+}
+
+.button-blue {
+    -fx-background-color: #03A9F4;
+}
+
+.button-red {
+    -fx-background-color: #F44336;
+}
+
+/* Notifications */
+.label-message {
+    -fx-font-size: 14px;
+    -fx-text-fill: green;
+}

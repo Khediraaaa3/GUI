@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainAppController" stylesheets="@styles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <spacing>20</spacing>
 
-</AnchorPane>
+    <!-- Header -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Dashboard - Materials and Suppliers Management" styleClass="label-title"/>
+    </HBox>
+
+    <!-- Description -->
+    <Label text="Choose a section to manage:" styleClass="label-message"/>
+
+    <!-- Buttons -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Manage Materials" onAction="#openMaterialsInterface" styleClass="button-green"/>
+        <Button text="Manage Suppliers" onAction="#openSuppliersInterface" styleClass="button-blue"/>
+    </HBox>
+
+    <!-- Notifications -->
+    <Label fx:id="notificationLabel" text="" styleClass="label-message"/>
+</VBox>

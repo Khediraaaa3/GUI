@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifMaterielController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <spacing>15</spacing>
 
-</AnchorPane>
+    <!-- Titre -->
+    <Label text="Modifier un Matériel" style="-fx-font-size: 20px; -fx-font-weight: bold;" VBox.vgrow="NEVER"/>
+
+    <!-- ID du Matériel -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="ID:"/>
+        <TextField fx:id="idField" editable="false" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Nom -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Nom:"/>
+        <TextField fx:id="nomField" promptText="Entrez le nom" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Type -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Type:"/>
+        <TextField fx:id="typeField" promptText="Entrez le type" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Quantité Totale -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Quantité Totale:"/>
+        <TextField fx:id="qteTotField" promptText="Entrez la quantité totale" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Quantité Disponible -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Quantité Disponible:"/>
+        <TextField fx:id="qteDispField" promptText="Entrez la quantité disponible" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- ID Lieu -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="ID Lieu:"/>
+        <TextField fx:id="idLieuField" promptText="Entrez l'ID du lieu" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- ID Fournisseur -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="ID Fournisseur:"/>
+        <TextField fx:id="idFournField" promptText="Entrez l'ID du fournisseur" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Bouton Modifier -->
+    <Button text="Modifier" onAction="#modifierMateriel" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" VBox.vgrow="NEVER"/>
+
+    <!-- Message de Confirmation -->
+    <Label fx:id="messageLabel" text="" style="-fx-font-size: 14px; -fx-text-fill: green;" VBox.vgrow="NEVER"/>
+</VBox>

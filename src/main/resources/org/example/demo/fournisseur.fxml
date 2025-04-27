@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FournisseurController" stylesheets="@styles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <spacing>15</spacing>
 
-</AnchorPane>
+    <!-- Title -->
+    <Label text="Supplier Management" styleClass="label-title" VBox.vgrow="NEVER"/>
+
+    <!-- Search Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+        <Label text="Search:"/>
+        <TextField fx:id="searchField" promptText="Enter name or ID" HBox.hgrow="ALWAYS"/>
+        <Button text="Search" onAction="#filterSuppliers" styleClass="button-green"/>
+        <Button text="Reset" onAction="#resetFilter" styleClass="button-blue"/>
+    </HBox>
+
+    <!-- Table to Display Suppliers -->
+    <TableView fx:id="fournisseurTable" VBox.vgrow="ALWAYS" styleClass="table-view">
+        <columns>
+            <TableColumn text="Name" prefWidth="150" fx:id="nomColumn"/>
+            <TableColumn text="Phone Number" prefWidth="120" fx:id="numColumn"/>
+        </columns>
+    </TableView>
+
+    <!-- Form to Add a Supplier -->
+    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+        <Label text="Name:"/>
+        <TextField fx:id="nomField" promptText="Enter name" HBox.hgrow="ALWAYS"/>
+
+        <Label text="Phone Number:"/>
+        <TextField fx:id="numField" promptText="Enter phone number" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- CRUD Buttons -->
+    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+        <Button text="Add" onAction="#addSupplier" styleClass="button-green"/>
+        <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue"/>
+        <Button text="Delete" onAction="#deleteSelectedSupplier" styleClass="button-red"/>
+    </HBox>
+
+    <!-- Notifications -->
+    <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+</VBox>
