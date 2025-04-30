@@ -1,22 +1,31 @@
 package controllers;
 
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import entities.Materiel;
 import services.MaterielService;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
+
 public class MaterielController {
 
+    private BarChart<String, Number> materialStockChart;
+    private Connection con;
     @FXML private TableView<Materiel> materielTable;
     @FXML private TableColumn<Materiel, String> nomColumn;
     @FXML private TableColumn<Materiel, String> typeColumn;
@@ -46,6 +55,31 @@ public class MaterielController {
 
         // Load data into the table
         refreshTable();
+
+    }
+
+    private ObservableList<XYChart.Series<String, Number>> fetchMaterialStockData() {
+        ObservableList<XYChart.Series<String, Number>> data = FXCollections.observableArrayList();
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Stock Levels");
+
+        // Example: Fetch data from the database
+        String query = "SELECT name, stock_level FROM materials";
+        try (
+                PreparedStatement statement = con.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String materialName = resultSet.getString("name");
+                int stockLevel = resultSet.getInt("stock_level");
+                series.getData().add(new XYChart.Data<>(materialName, stockLevel));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        data.add(series);
+        return data;
     }
 
     /**
@@ -74,11 +108,11 @@ public class MaterielController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Material added successfully.","green");
+            displayNotification("Material added successfully.","orange");
 
         } catch (Exception e) {
             e.printStackTrace();
-            displayNotification("Error loading the add material interface.", "red");
+            displayNotification("Error loading the add material interface.", "orange");
         }
     }
 
@@ -107,7 +141,7 @@ public class MaterielController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Material updated successfully.","green");
+            displayNotification("Material updated successfully.","orange");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,7 +161,7 @@ public class MaterielController {
 
         materielService.supprimerM(selectedMaterial.getId_mat());
         refreshTable();
-        displayNotification("Material deleted successfully.","green");
+        displayNotification("Material deleted successfully.","orange");
     }
 
     /**
@@ -145,7 +179,7 @@ public class MaterielController {
         }
 
         materielTable.setItems(filteredList);
-        displayNotification("Results filtered.","green");
+        displayNotification("Results filtered.","orange");
     }
 
     /**
@@ -155,7 +189,7 @@ public class MaterielController {
     public void resetFilter() {
         searchField.clear();
         refreshTable();
-        displayNotification("Filter reset.","green");
+        displayNotification("Filter reset.","orange");
     }
 
     /**
@@ -180,6 +214,8 @@ public class MaterielController {
      */
     private void displayNotification(String message, String color) {
         notificationLabel.setText(message);
-        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
     }
+
+
 }

@@ -55,7 +55,7 @@ public class ModifMaterielController {
 
         // Validation des champs
         if (nom.isEmpty() || type.isEmpty() || qteTotStr.isEmpty() || qteDispStr.isEmpty() || idLieuStr.isEmpty() || idFournStr.isEmpty()) {
-            afficherMessage("Tous les champs sont obligatoires.", "red");
+            afficherMessage("Tous les champs sont obligatoires.", "orange");
             return;
         }
 
@@ -78,17 +78,17 @@ public class ModifMaterielController {
             // Appeler le service pour enregistrer les modifications dans la base de données
             boolean success = materielService.modifierM(materielSelectionne);
             if (success) {
-                afficherMessage("Matériel modifié avec succès !", "green");
+                afficherMessage("Matériel modifié avec succès !", "orange");
 
                 // Fermer la fenêtre après modification
                 Stage stage = (Stage) messageLabel.getScene().getWindow();
                 stage.close();
             } else {
-                afficherMessage("Erreur lors de la modification.", "red");
+                afficherMessage("Erreur lors de la modification.", "orange");
             }
 
         } catch (NumberFormatException e) {
-            afficherMessage("Les champs numériques doivent être des nombres entiers.", "red");
+            afficherMessage("Les champs numériques doivent être des nombres entiers.", "orange");
         }
     }
 
@@ -100,6 +100,6 @@ public class ModifMaterielController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
     }
 }

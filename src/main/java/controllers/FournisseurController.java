@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -24,6 +26,9 @@ public class FournisseurController {
     @FXML private TextField searchField;
     @FXML private Label notificationLabel;
 
+    // Ajout du BarChart pour afficher les données dynamiques
+    @FXML private BarChart<String, Number> materialStockChart;
+
     private final ObservableList<fournisseur> fournisseurList = FXCollections.observableArrayList();
     private final FournisseurService fournisseurService = new FournisseurService();
 
@@ -32,12 +37,15 @@ public class FournisseurController {
      */
     @FXML
     public void initialize() {
-        // Initialize the table columns
+        // Initialiser les colonnes de la table
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom_fourn"));
         numColumn.setCellValueFactory(new PropertyValueFactory<>("num_fourn"));
 
-        // Load data into the table
+        // Charger les données dans la table
         refreshTable();
+
+        // Remplir le graphique avec des données dynamiques
+        //populateBarChart();
     }
 
     /**
@@ -62,15 +70,15 @@ public class FournisseurController {
             Stage stage = new Stage();
             stage.setTitle("Add New Supplier");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Make it a modal window
+            stage.initModality(Modality.APPLICATION_MODAL); // Fenêtre modale
             stage.showAndWait();
 
-            refreshTable(); // Refresh the table after adding
-            displayNotification("Supplier added successfully.","green");
+            refreshTable(); // Rafraîchir la table après ajout
+            displayNotification("Supplier added successfully.", "orange");
 
         } catch (Exception e) {
             e.printStackTrace();
-            displayNotification("Error loading the add supplier interface.", "red");
+            displayNotification("Error loading the add supplier interface.", "orange");
         }
     }
 
@@ -99,7 +107,7 @@ public class FournisseurController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Supplier updated successfully.","green");
+            displayNotification("Supplier updated successfully.", "orange");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,25 +127,30 @@ public class FournisseurController {
 
         fournisseurService.supprimerF(selectedSupplier.getId_fourn());
         refreshTable();
-        displayNotification("Supplier deleted successfully.","green");
+        displayNotification("Supplier deleted successfully.", "orange");
     }
 
     /**
      * Filter suppliers based on the search text.
      */
     @FXML
-    public void filterSuppliers() {
+    public void filterSuppliers() { // Correction : Assurez-vous que ce nom correspond à celui dans le fichier .fxml
         String filter = searchField.getText().toLowerCase();
+        String filter2 = searchField.getText().trim();
 
         ObservableList<fournisseur> filteredList = FXCollections.observableArrayList();
         for (fournisseur supplier : fournisseurService.afficherF()) {
             if (supplier.getNom_fourn().toLowerCase().contains(filter)) {
                 filteredList.add(supplier);
             }
+            String phoneNumber = String.valueOf(supplier.getNum_fourn());
+            if (phoneNumber.contains(filter2)) {
+                filteredList.add(supplier);
+            }
         }
 
         fournisseurTable.setItems(filteredList);
-        displayNotification("Results filtered.","green");
+        displayNotification("Results filtered.", "orange");
     }
 
     /**
@@ -147,8 +160,26 @@ public class FournisseurController {
     public void resetFilter() {
         searchField.clear();
         refreshTable();
-        displayNotification("Filter reset.","green");
+        displayNotification("Filter reset.", "orange");
     }
+
+    /**
+     * Populate the BarChart with dynamic data.
+     */
+    /*private void populateBarChart() {
+        // Créer une série de données pour le graphique
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Stock Levels");
+
+        // Simuler des données ou récupérer depuis la base de données
+        for (fournisseur supplier : fournisseurService.afficherF()) {
+            series.getData().add(new XYChart.Data<>(supplier.getNom_fourn(), supplier.getNum_fourn()));
+        }
+
+        // Ajouter la série au graphique
+        materialStockChart.getData().clear(); // Nettoyer les anciennes données
+        materialStockChart.getData().add(series);
+    }*/
 
     /**
      * Show an alert dialog.
@@ -156,6 +187,7 @@ public class FournisseurController {
      * @param title   The title of the alert.
      * @param message The message of the alert.
      */
+    @FXML
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -172,7 +204,7 @@ public class FournisseurController {
      */
     private void displayNotification(String message, String color) {
         notificationLabel.setText(message);
-        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> notificationLabel.setText(""));

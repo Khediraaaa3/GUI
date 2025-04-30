@@ -41,7 +41,7 @@ public class ModifFournisseurController {
 
         // Validation des champs
         if (nom.isEmpty() || numStr.isEmpty()) {
-            afficherMessage("Tous les champs sont obligatoires.", "red");
+            afficherMessage("Tous les champs sont obligatoires.", "orange");
             return;
         }
 
@@ -55,13 +55,13 @@ public class ModifFournisseurController {
             // Appeler le service pour enregistrer les modifications dans la base de données
             boolean success = fournisseurService.modifierF(fournisseurSelectionne);
             if (success) {
-                afficherMessage("Fournisseur modifié avec succès !", "green");
+                afficherMessage("Fournisseur modifié avec succès !", "orange");
 
                 // Fermer la fenêtre après modification
                 Stage stage = (Stage) messageLabel.getScene().getWindow();
                 stage.close();
             } else {
-                afficherMessage("Erreur lors de la modification.", "red");
+                afficherMessage("Erreur lors de la modification.", "orange");
             }
 
         } catch (NumberFormatException e) {
@@ -77,6 +77,6 @@ public class ModifFournisseurController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
     }
 }

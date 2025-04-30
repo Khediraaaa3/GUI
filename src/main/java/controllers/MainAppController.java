@@ -39,6 +39,10 @@
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/fournisseur.fxml"));
             Parent root = loader.load();
+            root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
+                    "-fx-background-size: cover;" +
+                    "-fx-background-position: center center;" +
+                    "-fx-background-repeat: no-repeat;");
 
             Stage stage = new Stage();
             stage.setTitle("Suppliers Management");
@@ -46,11 +50,11 @@
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            displayNotification("Suppliers interface closed.", "green");
+            displayNotification("Suppliers interface closed.", "orange");
 
         } catch (IOException e) {
             e.printStackTrace();
-            displayNotification("Error loading the suppliers interface.", "red");
+            displayNotification("Error loading the suppliers interface.", "orange");
         }
     }
 
@@ -59,6 +63,10 @@
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/Materiels.fxml"));
                 Parent root = loader.load();
+                root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
+                        "-fx-background-size: cover;" +
+                        "-fx-background-position: center center;" +
+                        "-fx-background-repeat: no-repeat;");
 
                 Stage stage = new Stage();
                 stage.setTitle("Materials Management");
@@ -66,11 +74,11 @@
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
 
-                displayNotification("Materials interface closed.", "green");
+                displayNotification("Materials interface closed.", "orange");
 
             } catch (IOException e) {
                 e.printStackTrace();
-                displayNotification("Error loading the materials interface.", "red");
+                displayNotification("Error loading the materials interface.", "orange");
             }
         }
 
@@ -81,7 +89,7 @@
 
         private void displayNotification(String message, String color) {
             notificationLabel.setText(message);
-            notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+            notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
         }
 
 }

@@ -4,6 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.BarChart?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MaterielController" stylesheets="@styles.css">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -42,4 +45,5 @@
 
     <!-- Notifications -->
     <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+
 </VBox>

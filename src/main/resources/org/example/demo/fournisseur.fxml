@@ -4,6 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FournisseurController" stylesheets="@styles.css">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -16,8 +19,8 @@
     <!-- Search Bar -->
     <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
         <Label text="Search:"/>
-        <TextField fx:id="searchField" promptText="Enter name or ID" HBox.hgrow="ALWAYS"/>
-        <Button text="Search" onAction="#filterSuppliers" styleClass="button-green"/>
+        <TextField fx:id="searchField" promptText="Enter name or phone number" HBox.hgrow="ALWAYS"/>
+        <Button text="Search" onAction="#filterSuppliers" styleClass="button-green"/> <!-- Correction ici -->
         <Button text="Reset" onAction="#resetFilter" styleClass="button-blue"/>
     </HBox>
 
@@ -38,4 +41,14 @@
 
     <!-- Notifications -->
     <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+
+    <!-- Ajout d'un BarChart pour afficher les données dynamiques -->
+    <!--<BarChart fx:id="materialStockChart" title="Material Stock Levels" VBox.vgrow="ALWAYS">
+        <xAxis>
+            <CategoryAxis label="Suppliers" />
+        </xAxis>
+        <yAxis>
+            <NumberAxis label="Stock Level" />
+        </yAxis>
+    </BarChart>-->
 </VBox>

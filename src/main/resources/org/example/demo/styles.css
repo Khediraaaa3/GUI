@@ -13,7 +13,7 @@
 }
 
 .button-blue {
-    -fx-background-color: #3498db; /* Blue color */
+    -fx-background-color: #96a7b5; /* Blue color */
     -fx-text-fill: white;
     -fx-padding: 10px 20px;
     -fx-font-size: 16px;
@@ -36,7 +36,7 @@
 }
 
 .button-blue:hover {
-    -fx-background-color: #2980b9; /* Slightly darker blue on hover */
+    -fx-background-color: #787e83; /* Slightly darker blue on hover */
 }
 
 .button-red:hover {

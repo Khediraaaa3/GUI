@@ -25,7 +25,7 @@ public class AjouterFournisseurController {
 
         // Validate that all fields are filled
         if (name.isEmpty() || phoneStr.isEmpty()) {
-            afficherMessage("All fields are required.", "red");
+            afficherMessage("All fields are required.", "orange");
             return;
         }
 
@@ -40,7 +40,7 @@ public class AjouterFournisseurController {
             fournisseurService.ajouterF(supplier);
 
             // Display success message
-            afficherMessage("Supplier added successfully!", "green");
+            afficherMessage("Supplier added successfully!", "orange");
 
             // Close the modal window after adding
             Stage stage = (Stage) messageLabel.getScene().getWindow();
@@ -48,7 +48,7 @@ public class AjouterFournisseurController {
 
         } catch (NumberFormatException e) {
             // Handle invalid numeric input
-            afficherMessage("The 'Phone Number' field must be an integer.", "red");
+            afficherMessage("The 'Phone Number' field must be an integer.", "orange");
         }
     }
 
@@ -60,6 +60,6 @@ public class AjouterFournisseurController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
     }
 }

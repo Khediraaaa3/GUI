@@ -34,7 +34,7 @@ public class AjouterMaterielController {
         // Validate that all fields are filled
         if (name.isEmpty() || type.isEmpty() || totalQuantityStr.isEmpty() || availableQuantityStr.isEmpty()
                 || locationIdStr.isEmpty() || supplierIdStr.isEmpty()) {
-            afficherMessage("All fields are required.", "red");
+            afficherMessage("All fields are required.", "orange");
             return;
         }
 
@@ -52,7 +52,7 @@ public class AjouterMaterielController {
             materielService.ajouterM(material);
 
             // Display success message
-            afficherMessage("Material added successfully!", "green");
+            afficherMessage("Material added successfully!", "orange");
 
             // Close the modal window after adding
             Stage stage = (Stage) messageLabel.getScene().getWindow();
@@ -60,7 +60,7 @@ public class AjouterMaterielController {
 
         } catch (NumberFormatException e) {
             // Handle invalid numeric input
-            afficherMessage("Numeric fields must be integers.", "red");
+            afficherMessage("Numeric fields must be integers.", "orange");
         }
     }
 
@@ -72,6 +72,6 @@ public class AjouterMaterielController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 14px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
     }
 }

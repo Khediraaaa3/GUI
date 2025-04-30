@@ -14,8 +14,13 @@ public class MainApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/mainApp.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 800, 600);
             scene.getStylesheets().add(getClass().getResource("/org/example/demo/styles.css").toExternalForm());
+
+            root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
+                                "-fx-background-size: cover;" +
+                               "-fx-background-position: center center;" +
+                                "-fx-background-repeat: no-repeat;");
 
             primaryStage.setTitle("Dashboard - Materials and Suppliers Management");
             primaryStage.setScene(scene);
