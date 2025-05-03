@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javafx.animation.PauseTransition;
@@ -14,14 +15,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import entities.fournisseur;
+import entities.Fournisseur;
 import services.FournisseurService;
 
 public class FournisseurController {
 
-    @FXML private TableView<fournisseur> fournisseurTable;
-    @FXML private TableColumn<fournisseur, String> nomColumn;
-    @FXML private TableColumn<fournisseur, Integer> numColumn;
+    @FXML private TableView<Fournisseur> fournisseurTable;
+    @FXML private TableColumn<Fournisseur, String> nomColumn;
+    @FXML private TableColumn<Fournisseur, Integer> numColumn;
 
     @FXML private TextField searchField;
     @FXML private Label notificationLabel;
@@ -29,7 +30,7 @@ public class FournisseurController {
     // Ajout du BarChart pour afficher les données dynamiques
     @FXML private BarChart<String, Number> materialStockChart;
 
-    private final ObservableList<fournisseur> fournisseurList = FXCollections.observableArrayList();
+    private final ObservableList<Fournisseur> fournisseurList = FXCollections.observableArrayList();
     private final FournisseurService fournisseurService = new FournisseurService();
 
     /**
@@ -87,7 +88,7 @@ public class FournisseurController {
      */
     @FXML
     public void openEditWindow() {
-        fournisseur selectedSupplier = fournisseurTable.getSelectionModel().getSelectedItem();
+        Fournisseur selectedSupplier = fournisseurTable.getSelectionModel().getSelectedItem();
         if (selectedSupplier == null) {
             showAlert("Error", "No supplier selected!");
             return;
@@ -119,7 +120,7 @@ public class FournisseurController {
      */
     @FXML
     public void deleteSelectedSupplier() {
-        fournisseur selectedSupplier = fournisseurTable.getSelectionModel().getSelectedItem();
+        Fournisseur selectedSupplier = fournisseurTable.getSelectionModel().getSelectedItem();
         if (selectedSupplier == null) {
             showAlert("Error", "No supplier selected!");
             return;
@@ -138,8 +139,8 @@ public class FournisseurController {
         String filter = searchField.getText().toLowerCase();
         String filter2 = searchField.getText().trim();
 
-        ObservableList<fournisseur> filteredList = FXCollections.observableArrayList();
-        for (fournisseur supplier : fournisseurService.afficherF()) {
+        ObservableList<Fournisseur> filteredList = FXCollections.observableArrayList();
+        for (Fournisseur supplier : fournisseurService.afficherF()) {
             if (supplier.getNom_fourn().toLowerCase().contains(filter)) {
                 filteredList.add(supplier);
             }

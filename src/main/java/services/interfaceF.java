@@ -1,11 +1,11 @@
 package services;
-import entities.fournisseur;
+import entities.Fournisseur;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface interfaceF {
-    public void ajouterF(fournisseur f);
-    public boolean modifierF(fournisseur f);
+    public void ajouterF(Fournisseur f);
+    public boolean modifierF(Fournisseur f);
     public void supprimerF(int id);
-    List<fournisseur> afficherF();
+    List<Fournisseur> afficherF();
 }

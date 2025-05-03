@@ -1,10 +1,11 @@
 package controllers;
 
+import entities.Fournisseur;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import entities.fournisseur;
+import entities.Fournisseur;
 import services.FournisseurService;
 
 public class ModifFournisseurController {
@@ -15,14 +16,14 @@ public class ModifFournisseurController {
     @FXML private Label messageLabel;
 
     private final FournisseurService fournisseurService = new FournisseurService();
-    private fournisseur fournisseurSelectionne;
+    private Fournisseur fournisseurSelectionne;
 
     /**
      * Initialiser les champs avec les données du fournisseur sélectionné.
      *
      * @param fournisseur Le fournisseur à modifier.
      */
-    public void initData(fournisseur fournisseur) {
+    public void initData(Fournisseur fournisseur) {
         this.fournisseurSelectionne = fournisseur;
 
         // Pré-remplir les champs
@@ -46,7 +47,7 @@ public class ModifFournisseurController {
         }
 
         try {
-            int num = Integer.parseInt(numStr);
+            String num = numStr;
 
             // Mettre à jour les propriétés du fournisseur sélectionné
             fournisseurSelectionne.setNom_fourn(nom);
@@ -77,6 +78,6 @@ public class ModifFournisseurController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
     }
 }

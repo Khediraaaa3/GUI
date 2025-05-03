@@ -11,16 +11,19 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/mainApp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/navigation.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root, 800, 600);
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/Navigation.fxml"));
+            //Parent root = loader.load();
+
+            Scene scene = new Scene(root, 1100, 700);
             scene.getStylesheets().add(getClass().getResource("/org/example/demo/styles.css").toExternalForm());
 
             root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
-                                "-fx-background-size: cover;" +
-                               "-fx-background-position: center center;" +
-                                "-fx-background-repeat: no-repeat;");
+                    "-fx-background-size: cover;" +
+                    "-fx-background-position: center center;" +
+                    "-fx-background-repeat: no-repeat;");
 
             primaryStage.setTitle("Dashboard - Materials and Suppliers Management");
             primaryStage.setScene(scene);

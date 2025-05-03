@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import entities.fournisseur;
+import entities.Fournisseur;
 import services.FournisseurService;
 
 public class AjouterFournisseurController {
@@ -31,10 +31,10 @@ public class AjouterFournisseurController {
 
         try {
             // Parse the phone number field
-            int phone = Integer.parseInt(phoneStr);
+            String phone = phoneStr;
 
             // Create a new supplier object
-            fournisseur supplier = new fournisseur(name, phone);
+            Fournisseur supplier = new Fournisseur(name, phone);
 
             // Add the supplier to the database
             fournisseurService.ajouterF(supplier);
@@ -60,6 +60,6 @@ public class AjouterFournisseurController {
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
     }
 }

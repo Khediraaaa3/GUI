@@ -1,36 +1,51 @@
-    package controllers;
+package controllers;
 
-    import javafx.fxml.FXML;
-    import javafx.fxml.FXMLLoader;
-    import javafx.scene.Parent;
-    import javafx.scene.Scene;
-    import javafx.scene.control.Label;
-    import javafx.stage.Modality;
-    import javafx.stage.Stage;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-    import javafx.fxml.FXML;
-    import javafx.scene.image.Image;
-    import javafx.scene.image.ImageView;
+import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-    import java.io.IOException;
+import java.io.IOException;
 
-    public class MainAppController {
+public class MainAppController {
 
-        @FXML private ImageView logoImage;
+    @FXML private ImageView logoImage;
 
-        @FXML private Label notificationLabel;
+    @FXML private Label notificationLabel;
 
+    @FXML
+    private GridPane mainMenu;
 
-        @FXML
-        public void initialize() {
-            // Charger l'image du logo
-            try {
-                Image logo = new Image(getClass().getResource("/org/example/demo/logo.png").toExternalForm());
-                logoImage.setImage(logo);
-            } catch (Exception e) {
-                System.out.println("Erreur lors du chargement de l'image du logo : " + e.getMessage());
-            }
+    // MainAppController.java
+    @FXML
+    private BorderPane stockManagementPane; // Assure-toi que l'ID est correct dans MainApp.fxml
+
+    public void showStockManagement() {
+        // Cache tous les panneaux sauf celui de la gestion de stock
+        mainMenu.setVisible(false); // mainMenu est l'ID de ton GridPane principal
+        stockManagementPane.setVisible(true);
+        // Autres initialisations si nécessaire
+    }
+
+    @FXML
+    public void initialize() {
+        // Charger l'image du logo
+        try {
+            Image logo = new Image(getClass().getResource("/org/example/demo/logo.png").toExternalForm());
+            logoImage.setImage(logo);
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement de l'image du logo : " + e.getMessage());
         }
+    }
     /**
      * Open the Materials Management interface.
      */
@@ -58,38 +73,38 @@
         }
     }
 
-        @FXML
-        public void openMaterialsInterface() {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/Materiels.fxml"));
-                Parent root = loader.load();
-                root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
-                        "-fx-background-size: cover;" +
-                        "-fx-background-position: center center;" +
-                        "-fx-background-repeat: no-repeat;");
+    @FXML
+    public void openMaterialsInterface() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/Materiels.fxml"));
+            Parent root = loader.load();
+            root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
+                    "-fx-background-size: cover;" +
+                    "-fx-background-position: center center;" +
+                    "-fx-background-repeat: no-repeat;");
 
-                Stage stage = new Stage();
-                stage.setTitle("Materials Management");
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.showAndWait();
+            Stage stage = new Stage();
+            stage.setTitle("Materials Management");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
-                displayNotification("Materials interface closed.", "orange");
+            displayNotification("Materials interface closed.", "orange");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                displayNotification("Error loading the materials interface.", "orange");
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            displayNotification("Error loading the materials interface.", "orange");
         }
+    }
 
-        @FXML
-        public void exitApplication() {
-            System.exit(0);
-        }
+    @FXML
+    public void exitApplication() {
+        System.exit(0);
+    }
 
-        private void displayNotification(String message, String color) {
-            notificationLabel.setText(message);
-            notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
-        }
+    private void displayNotification(String message, String color) {
+        notificationLabel.setText(message);
+        notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
+    }
 
 }
