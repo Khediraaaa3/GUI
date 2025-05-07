@@ -1,58 +1,167 @@
-/* Main App Styles */
-.label-title {
-    -fx-font-size: 24px;
+/* Couleurs globales */
+.root {
+    -fx-background-color: #f4f4f4;
+    -fx-font-family: "System", sans-serif;
+}
+
+/* Zone haute (top bar) */
+.top-bar {
+    -fx-background-color: #002366;
+    -fx-padding: 10;
+}
+
+.menu-top-button {
+    -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333; /* Dark gray color */
-}
-
-.button-green {
-    -fx-background-color: #2ecc71; /* Green color */
-    -fx-text-fill: white;
-    -fx-padding: 10px 20px;
     -fx-font-size: 16px;
+    -fx-padding: 10 20;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
 }
 
-.button-blue {
-    -fx-background-color: #3498db; /* Better blue */
+.menu-top-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-radius: 5px;
+}
+
+/* Bouton Exit (icone) */
+.exit-icon {
+    -fx-cursor: hand;
+}
+
+/* Menu latéral */
+.sidebar {
+    -fx-background-color: #002366;
+    -fx-padding: 25 15 25 15;
+}
+
+.sidebar-title {
     -fx-text-fill: white;
-    -fx-padding: 10px 20px;
-    -fx-font-size: 16px;
-}
-
-.button-red {
-    -fx-background-color: #e74c3c; /* Red color */
-    -fx-text-fill: white;
-    -fx-padding: 10px 20px;
-    -fx-font-size: 16px;
-}
-
-.label-message {
-    -fx-font-size: 14px;
-    -fx-text-fill: green;
-}
-
-.label-error {
-    -fx-text-fill: red;
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
+    -fx-padding: 10 0;
 }
 
-/* Hover Effects */
-.button-green:hover,
-.button-blue:hover,
-.button-red:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+.sidebar-separator {
+    -fx-background-color: white;
+    -fx-padding: 2;
 }
 
-.button-green:hover {
-    -fx-background-color: #27ae60; /* Slightly darker green on hover */
+.sidebarItem {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
 }
 
-.button-blue:hover {
-    -fx-background-color: #2980b9; /* Darker blue on hover */
+.sidebarItem:hover {
+    -fx-background-color: #1b3a78;
 }
 
-.button-red:hover {
-    -fx-background-color: #c0392b; /* Darker red on hover */
+/* Cartes matériaux/fournisseurs */
+.card {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 0);
+}
+
+.card-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.card-label-bold {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #002366;
+}
+
+.card-details {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-padding: 10;
+    -fx-border-radius: 5px;
+}
+
+.card-details-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+}
+
+/* Bouton Détails */
+.card-details-button {
+    -fx-background-color: #002366;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.card-details-button:hover {
+    -fx-background-color: #003b99;
+}
+
+/* Boutons d'action dans les cartes */
+.card-action-buttons .jfx-button {
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+/* Bouton Modifier → Vert clair */
+.card-modifier-button {
+    -fx-background-color: #4CAF50; /* Vert Google Material */
+    -fx-text-fill: white;
+}
+
+.card-modifier-button:hover {
+    -fx-background-color: #45a049;
+}
+
+/* Bouton Supprimer → Rouge */
+.card-supprimer-button {
+    -fx-background-color: #ef5350;
+    -fx-text-fill: white;
+}
+
+.card-supprimer-button:hover {
+    -fx-background-color: #e53935;
+}
+
+/* Barre de recherche */
+.search-container {
+    -fx-padding: 10;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #002366;
+    -fx-border-width: 1px;
+}
+
+.search-field {
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: #002366;
+    -fx-font-size: 14px;
+    -fx-border-color: #002366;
+    -fx-border-radius: 4;
+}
+
+.search-button {
+    -fx-background-color: #002366;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.search-button:hover {
+    -fx-background-color: #003b99;
+}
+
+/* Bouton générique JFXButton stylisé */
+.jfx-button {
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
 }

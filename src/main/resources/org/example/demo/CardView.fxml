@@ -52,8 +52,8 @@
         <Label text="ID Fournisseur : "/><Label fx:id="idFournLabel"/>
 
         <HBox spacing="10">
-            <JFXButton text="Modifier" style="-fx-background-color: #002366; -fx-text-fill: white;" onAction="#modifier"/>
-            <JFXButton text="Supprimer" style="-fx-background-color: red; -fx-text-fill: white;" onAction="#supprimer"/>
+            <JFXButton text="Modifier" styleClass="card-modifier-button" onAction="#modifier"/>
+            <JFXButton text="Supprimer" styleClass="card-supprimer-button" onAction="#supprimer"/>
         </HBox>
     </VBox>
 

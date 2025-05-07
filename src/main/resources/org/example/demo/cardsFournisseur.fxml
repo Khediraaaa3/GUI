@@ -18,6 +18,7 @@
 
     <children>
         <VBox spacing="10">
+            <!-- Barre de recherche -->
             <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
                 <TextField fx:id="searchField" promptText="Rechercher un fournisseur..." onAction="#handleSearch"/>
                 <JFXButton text="Rechercher" onAction="#handleSearch"
