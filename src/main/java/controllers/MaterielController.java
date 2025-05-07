@@ -1,31 +1,24 @@
 package controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.collections.FXCollections;
+
+import entities.Materiel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import entities.Materiel;
+import javafx.util.Duration;
 import services.MaterielService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-
+import java.util.List;
 
 public class MaterielController {
 
-    private BarChart<String, Number> materialStockChart;
-    private Connection con;
     @FXML private TableView<Materiel> materielTable;
     @FXML private TableColumn<Materiel, String> nomColumn;
     @FXML private TableColumn<Materiel, String> typeColumn;
@@ -36,16 +29,14 @@ public class MaterielController {
 
     @FXML private TextField searchField;
     @FXML private Label notificationLabel;
+    @FXML private Button menuButton;
+    @FXML private MenuButton dropdownMenu;
 
-    private final ObservableList<Materiel> materielList = FXCollections.observableArrayList();
     private final MaterielService materielService = new MaterielService();
 
-    /**
-     * Initialize the table columns and load data.
-     */
     @FXML
     public void initialize() {
-        // Initialize the table columns
+        // Initialiser les colonnes
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom_mat"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type_mat"));
         qteTotColumn.setCellValueFactory(new PropertyValueFactory<>("qte_tot"));
@@ -53,47 +44,16 @@ public class MaterielController {
         idLieuColumn.setCellValueFactory(new PropertyValueFactory<>("IdLieu"));
         idFournColumn.setCellValueFactory(new PropertyValueFactory<>("id_fourn"));
 
-        // Load data into the table
         refreshTable();
-
     }
 
-    private ObservableList<XYChart.Series<String, Number>> fetchMaterialStockData() {
-        ObservableList<XYChart.Series<String, Number>> data = FXCollections.observableArrayList();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Stock Levels");
-
-        // Example: Fetch data from the database
-        String query = "SELECT name, stock_level FROM materials";
-        try (
-                PreparedStatement statement = con.prepareStatement(query);
-                ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                String materialName = resultSet.getString("name");
-                int stockLevel = resultSet.getInt("stock_level");
-                series.getData().add(new XYChart.Data<>(materialName, stockLevel));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        data.add(series);
-        return data;
-    }
-
-    /**
-     * Refresh the table with data from the database.
-     */
     private void refreshTable() {
-        materielList.clear();
-        materielList.addAll(materielService.afficherM());
-        materielTable.setItems(materielList);
-        System.out.println("Table refreshed successfully.");
+        materielTable.getItems().clear();
+        materielTable.setItems(FXCollections.observableArrayList(materielService.afficherM()));
     }
 
     /**
-     * Open the Add Material window.
+     * Ouvre le formulaire d'ajout
      */
     @FXML
     public void openAddWindow() {
@@ -108,22 +68,21 @@ public class MaterielController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Material added successfully.","orange");
+            displayNotification("Material added successfully.", "green");
 
         } catch (Exception e) {
-            e.printStackTrace();
-            displayNotification("Error loading the add material interface.", "orange");
+            displayNotification("Error loading add form.", "red");
         }
     }
 
     /**
-     * Open the Edit Material window.
+     * Ouvre le formulaire de modification
      */
     @FXML
     public void openEditWindow() {
-        Materiel selectedMaterial = materielTable.getSelectionModel().getSelectedItem();
-        if (selectedMaterial == null) {
-            showAlert("Error", "No material selected!");
+        Materiel selected = materielTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            displayNotification("No material selected!", "red");
             return;
         }
 
@@ -132,7 +91,7 @@ public class MaterielController {
             Parent root = loader.load();
 
             ModifMaterielController controller = loader.getController();
-            controller.initData(selectedMaterial);
+            controller.initData(selected);
 
             Stage stage = new Stage();
             stage.setTitle("Edit Material");
@@ -141,81 +100,75 @@ public class MaterielController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Material updated successfully.","orange");
+            displayNotification("Material updated.", "green");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            displayNotification("Error loading edit form.", "red");
         }
     }
 
     /**
-     * Delete the selected material.
+     * Supprime le matériau sélectionné
      */
     @FXML
     public void deleteSelectedMaterial() {
-        Materiel selectedMaterial = materielTable.getSelectionModel().getSelectedItem();
-        if (selectedMaterial == null) {
-            showAlert("Error", "No material selected!");
+        Materiel selected = materielTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            displayNotification("No material selected!", "red");
             return;
         }
 
-        materielService.supprimerM(selectedMaterial.getId_mat());
-        refreshTable();
-        displayNotification("Material deleted successfully.","orange");
+        boolean deleted = materielService.supprimerM(selected.getId_mat());
+        if (deleted) {
+            refreshTable();
+            displayNotification("Material deleted.", "green");
+        } else {
+            displayNotification("Failed to delete material.", "red");
+        }
     }
 
     /**
-     * Filter materials based on the search text.
+     * Affiche les résultats filtrés
      */
     @FXML
     public void filterMaterials() {
         String filter = searchField.getText().toLowerCase();
+        List<Materiel> filteredList = materielService.afficherM().stream()
+                .filter(m -> m.getNom_mat().toLowerCase().contains(filter) ||
+                        m.getType_mat().toLowerCase().contains(filter))
+                .toList();
 
-        ObservableList<Materiel> filteredList = FXCollections.observableArrayList();
-        for (Materiel material : materielService.afficherM()) {
-            if (material.getNom_mat().toLowerCase().contains(filter) || material.getType_mat().toLowerCase().contains(filter)) {
-                filteredList.add(material);
-            }
-        }
-
-        materielTable.setItems(filteredList);
-        displayNotification("Results filtered.","orange");
+        materielTable.setItems(FXCollections.observableArrayList(filteredList));
+        displayNotification("Results filtered.", "orange");
     }
 
     /**
-     * Reset the filter and refresh the full table.
+     * Réinitialise le filtre
      */
     @FXML
     public void resetFilter() {
         searchField.clear();
         refreshTable();
-        displayNotification("Filter reset.","orange");
+        displayNotification("Filter reset.", "orange");
     }
 
     /**
-     * Show an alert dialog.
-     *
-     * @param title   The title of the alert.
-     * @param message The message of the alert.
+     * Active/désactive le menu déroulant
      */
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    @FXML
+    public void toggleDropdownMenu() {
+        dropdownMenu.setVisible(!dropdownMenu.isVisible());
+        dropdownMenu.setManaged(dropdownMenu.isVisible());
     }
 
     /**
-     * Display a temporary notification.
-     *
-     * @param message The message to display.
-     * @param color   The text color ("green" or "red").
+     * Affiche un message temporaire.
      */
     private void displayNotification(String message, String color) {
         notificationLabel.setText(message);
         notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px;");
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        delay.setOnFinished(e -> notificationLabel.setText(""));
+        delay.play();
     }
-
-
 }

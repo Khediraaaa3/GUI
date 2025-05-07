@@ -4,27 +4,28 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.BarChart?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MaterielController" stylesheets="@styles.css">
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.MaterielController"
+      stylesheets="@styles.css">
+
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="20" bottom="20" left="20" right="20"/>
     </padding>
     <spacing>15</spacing>
 
-    <!-- Title -->
-    <Label text="Material Management" styleClass="label-title" VBox.vgrow="NEVER"/>
+    <!-- Titre -->
+    <Label text="Material Management" styleClass="label-title"/>
 
-    <!-- Search Bar -->
-    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
+    <!-- Barre de recherche -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
         <Label text="Search:"/>
         <TextField fx:id="searchField" promptText="Enter name or type" HBox.hgrow="ALWAYS"/>
         <Button text="Search" onAction="#filterMaterials" styleClass="button-green"/>
         <Button text="Reset" onAction="#resetFilter" styleClass="button-blue"/>
     </HBox>
 
-    <!-- Table to Display Materials -->
+    <!-- Tableau des matériaux -->
     <TableView fx:id="materielTable" VBox.vgrow="ALWAYS" styleClass="table-view">
         <columns>
             <TableColumn text="Name" prefWidth="150" fx:id="nomColumn"/>
@@ -36,14 +37,14 @@
         </columns>
     </TableView>
 
-    <!-- CRUD Buttons -->
-    <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Button text="Add" onAction="#openAddWindow" styleClass="button-green"/>
-        <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue"/>
-        <Button text="Delete" onAction="#deleteSelectedMaterial" styleClass="button-red"/>
+    <!-- Boutons CRUD -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Add Material" onAction="#openAddWindow" styleClass="button-green"/>
+        <Button text="Edit Material" onAction="#openEditWindow" styleClass="button-blue"/>
+        <Button text="Delete Material" onAction="#deleteSelectedMaterial" styleClass="button-red"/>
     </HBox>
 
-    <!-- Notifications -->
-    <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+    <!-- Notification -->
+    <Label fx:id="notificationLabel" text="" styleClass="label-message"/>
 
 </VBox>

@@ -1,4 +1,3 @@
-
 package controllers;
 
 import javafx.animation.PauseTransition;
@@ -18,11 +17,14 @@ import javafx.util.Duration;
 import entities.Fournisseur;
 import services.FournisseurService;
 
+import java.util.Map;
+import java.util.Optional;
+
 public class FournisseurController {
 
     @FXML private TableView<Fournisseur> fournisseurTable;
-    @FXML private TableColumn<Fournisseur, String> nomColumn;
-    @FXML private TableColumn<Fournisseur, Integer> numColumn;
+    @FXML private TableColumn<Fournisseur, String> nomColumn; // ✅ Correction : String au lieu de Integer
+    @FXML private TableColumn<Fournisseur, String> numColumn;  // ✅ Correction : String au lieu de Integer
 
     @FXML private TextField searchField;
     @FXML private Label notificationLabel;
@@ -40,13 +42,12 @@ public class FournisseurController {
     public void initialize() {
         // Initialiser les colonnes de la table
         nomColumn.setCellValueFactory(new PropertyValueFactory<>("nom_fourn"));
-        numColumn.setCellValueFactory(new PropertyValueFactory<>("num_fourn"));
+        numColumn.setCellValueFactory(new PropertyValueFactory<>("num_fourn")); // ✅ Utilisation de StringProperty
 
         // Charger les données dans la table
         refreshTable();
 
         // Remplir le graphique avec des données dynamiques
-        //populateBarChart();
     }
 
     /**
@@ -75,11 +76,11 @@ public class FournisseurController {
             stage.showAndWait();
 
             refreshTable(); // Rafraîchir la table après ajout
-            displayNotification("Supplier added successfully.", "orange");
+            displayNotification("Supplier added successfully.", "green");
 
         } catch (Exception e) {
             e.printStackTrace();
-            displayNotification("Error loading the add supplier interface.", "orange");
+            showAlert("Error", "Failed to load add supplier interface: " + e.getMessage());
         }
     }
 
@@ -108,10 +109,11 @@ public class FournisseurController {
             stage.showAndWait();
 
             refreshTable();
-            displayNotification("Supplier updated successfully.", "orange");
+            displayNotification("Supplier updated successfully.", "green");
 
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Error", "Failed to load edit supplier interface: " + e.getMessage());
         }
     }
 
@@ -126,32 +128,39 @@ public class FournisseurController {
             return;
         }
 
-        fournisseurService.supprimerF(selectedSupplier.getId_fourn());
-        refreshTable();
-        displayNotification("Supplier deleted successfully.", "orange");
+        // ✅ Confirmation avant suppression
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this supplier?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean deleted = fournisseurService.supprimerF(selectedSupplier.getId_fourn());
+            if (deleted) {
+                refreshTable();
+                displayNotification("Supplier deleted successfully.", "green");
+            } else {
+                showAlert("Error", "Failed to delete supplier.");
+            }
+        }
     }
 
     /**
      * Filter suppliers based on the search text.
      */
     @FXML
-    public void filterSuppliers() { // Correction : Assurez-vous que ce nom correspond à celui dans le fichier .fxml
+    public void filterSuppliers() {
         String filter = searchField.getText().toLowerCase();
         String filter2 = searchField.getText().trim();
 
         ObservableList<Fournisseur> filteredList = FXCollections.observableArrayList();
         for (Fournisseur supplier : fournisseurService.afficherF()) {
-            if (supplier.getNom_fourn().toLowerCase().contains(filter)) {
-                filteredList.add(supplier);
-            }
-            String phoneNumber = String.valueOf(supplier.getNum_fourn());
-            if (phoneNumber.contains(filter2)) {
+            boolean matchNom = supplier.getNom_fourn().toLowerCase().contains(filter);
+            boolean matchNum = String.valueOf(supplier.getNum_fourn()).contains(filter2);
+            if (matchNom || matchNum) { // ✅ Correction : éviter les doublons
                 filteredList.add(supplier);
             }
         }
 
         fournisseurTable.setItems(filteredList);
-        displayNotification("Results filtered.", "orange");
+        displayNotification("Results filtered.", "green");
     }
 
     /**
@@ -161,26 +170,9 @@ public class FournisseurController {
     public void resetFilter() {
         searchField.clear();
         refreshTable();
-        displayNotification("Filter reset.", "orange");
+        displayNotification("Filter reset.", "green");
     }
 
-    /**
-     * Populate the BarChart with dynamic data.
-     */
-    /*private void populateBarChart() {
-        // Créer une série de données pour le graphique
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Stock Levels");
-
-        // Simuler des données ou récupérer depuis la base de données
-        for (fournisseur supplier : fournisseurService.afficherF()) {
-            series.getData().add(new XYChart.Data<>(supplier.getNom_fourn(), supplier.getNum_fourn()));
-        }
-
-        // Ajouter la série au graphique
-        materialStockChart.getData().clear(); // Nettoyer les anciennes données
-        materialStockChart.getData().add(series);
-    }*/
 
     /**
      * Show an alert dialog.
@@ -188,9 +180,8 @@ public class FournisseurController {
      * @param title   The title of the alert.
      * @param message The message of the alert.
      */
-    @FXML
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR); // ✅ Utilisation d'AlertType.ERROR pour les erreurs
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

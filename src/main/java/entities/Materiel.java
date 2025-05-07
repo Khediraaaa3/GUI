@@ -31,6 +31,11 @@ public class Materiel {
         this.id_fourn = id_fourn;
     }
 
+    public Materiel(String nom_mat, String type_mat) {
+        this.nom_mat = nom_mat;
+        this.type_mat = type_mat;
+    }
+
     public void setId_mat(int id_mat) {
         this.id_mat = id_mat;
     }

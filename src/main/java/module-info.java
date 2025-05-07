@@ -1,8 +1,9 @@
 module org.example.demo {
     // Déclarer les modules requis
-    requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires com.jfoenix;
+    requires javafx.controls;
 
     // Ouvrir les packages nécessaires à JavaFX
     opens test to javafx.fxml;         // Pour le package contenant MainApplication

@@ -1,9 +1,9 @@
 package controllers;
 
 import entities.Materiel;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.MaterielService;
 
@@ -16,6 +16,13 @@ public class ModifMaterielController {
     @FXML private TextField qteDispField;
     @FXML private TextField idLieuField;
     @FXML private TextField idFournField;
+
+    @FXML private Label nomErrorLabel;
+    @FXML private Label typeErrorLabel;
+    @FXML private Label qteTotErrorLabel;
+    @FXML private Label qteDispErrorLabel;
+    @FXML private Label idLieuErrorLabel;
+    @FXML private Label idFournErrorLabel;
     @FXML private Label messageLabel;
 
     private final MaterielService materielService = new MaterielService();
@@ -23,13 +30,10 @@ public class ModifMaterielController {
 
     /**
      * Initialiser les champs avec les données du matériel sélectionné.
-     *
-     * @param materiel Le matériel à modifier.
      */
     public void initData(Materiel materiel) {
         this.materielSelectionne = materiel;
 
-        // Pré-remplir les champs
         idField.setText(String.valueOf(materiel.getId_mat()));
         nomField.setText(materiel.getNom_mat());
         typeField.setText(materiel.getType_mat());
@@ -38,7 +42,7 @@ public class ModifMaterielController {
         idLieuField.setText(String.valueOf(materiel.getIdLieu()));
         idFournField.setText(String.valueOf(materiel.getId_fourn()));
 
-        System.out.println("Données initialisées pour la modification : " + materiel);
+        resetErreurs();
     }
 
     /**
@@ -46,60 +50,152 @@ public class ModifMaterielController {
      */
     @FXML
     public void modifierMateriel() {
-        String nom = nomField.getText();
-        String type = typeField.getText();
-        String qteTotStr = qteTotField.getText();
-        String qteDispStr = qteDispField.getText();
-        String idLieuStr = idLieuField.getText();
-        String idFournStr = idFournField.getText();
+        resetErreurs();
 
-        // Validation des champs
-        if (nom.isEmpty() || type.isEmpty() || qteTotStr.isEmpty() || qteDispStr.isEmpty() || idLieuStr.isEmpty() || idFournStr.isEmpty()) {
-            afficherMessage("Tous les champs sont obligatoires.", "orange");
-            return;
+        String name = nomField.getText().trim();
+        String type = typeField.getText().trim();
+        String totalStr = qteTotField.getText().trim();
+        String dispStr = qteDispField.getText().trim();
+        String lieuStr = idLieuField.getText().trim();
+        String fournStr = idFournField.getText().trim();
+
+        boolean isValid = true;
+
+        if (name.isEmpty()) {
+            afficherErreur(nomErrorLabel, "Le nom est requis.");
+            isValid = false;
+        }
+
+        if (type.isEmpty()) {
+            afficherErreur(typeErrorLabel, "Le type est requis.");
+            isValid = false;
+        }
+
+        int total = 0, disp = 0, lieu = 0, fourn = 0;
+
+        try {
+            total = Integer.parseInt(totalStr);
+            if (total < 0) {
+                afficherErreur(qteTotErrorLabel, "La quantité doit être ≥ 0.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            afficherErreur(qteTotErrorLabel, "Quantité totale invalide.");
+            isValid = false;
         }
 
         try {
-            int qteTot = Integer.parseInt(qteTotStr);
-            int qteDisp = Integer.parseInt(qteDispStr);
-            int idLieu = Integer.parseInt(idLieuStr);
-            int idFourn = Integer.parseInt(idFournStr);
+            disp = Integer.parseInt(dispStr);
+            if (disp < 0) {
+                afficherErreur(qteDispErrorLabel, "La quantité doit être ≥ 0.");
+                isValid = false;
+            }
+            if (disp > total) {
+                afficherErreur(qteDispErrorLabel, "Ne peut pas dépasser la quantité totale.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            afficherErreur(qteDispErrorLabel, "Quantité disponible invalide.");
+            isValid = false;
+        }
 
-            // Mettre à jour les propriétés du matériel sélectionné
-            materielSelectionne.setNom_mat(nom);
+        try {
+            lieu = Integer.parseInt(lieuStr);
+            if (lieu < 0) {
+                afficherErreur(idLieuErrorLabel, "Doit être ≥ 0.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            afficherErreur(idLieuErrorLabel, "ID Lieu doit être un entier.");
+            isValid = false;
+        }
+
+        try {
+            fourn = Integer.parseInt(fournStr);
+            if (fourn < 0) {
+                afficherErreur(idFournErrorLabel, "Doit être ≥ 0.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            afficherErreur(idFournErrorLabel, "ID Fournisseur doit être un entier.");
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        try {
+            materielSelectionne.setNom_mat(name);
             materielSelectionne.setType_mat(type);
-            materielSelectionne.setQte_tot(qteTot);
-            materielSelectionne.setQte_disp(qteDisp);
-            materielSelectionne.setIdLieu(idLieu);
-            materielSelectionne.setId_fourn(idFourn);
+            materielSelectionne.setQte_tot(total);
+            materielSelectionne.setQte_disp(disp);
+            materielSelectionne.setIdLieu(lieu);
+            materielSelectionne.setId_fourn(fourn);
 
-            System.out.println("Données à modifier : " + materielSelectionne);
-
-            // Appeler le service pour enregistrer les modifications dans la base de données
             boolean success = materielService.modifierM(materielSelectionne);
             if (success) {
-                afficherMessage("Matériel modifié avec succès !", "orange");
-
-                // Fermer la fenêtre après modification
-                Stage stage = (Stage) messageLabel.getScene().getWindow();
-                stage.close();
+                afficherMessage("Matériel modifié avec succès !", "green");
+                fermerFenetreApresDelai(2000);
             } else {
-                afficherMessage("Erreur lors de la modification.", "orange");
+                afficherMessage("Erreur lors de la modification.", "red");
             }
 
-        } catch (NumberFormatException e) {
-            afficherMessage("Les champs numériques doivent être des nombres entiers.", "orange");
+        } catch (Exception e) {
+            afficherMessage("Erreur : " + e.getMessage(), "red");
         }
     }
 
     /**
-     * Afficher un message dans l'interface.
-     *
-     * @param message Le message à afficher.
-     * @param color   La couleur du texte ("green" ou "red").
+     * Afficher une erreur sous un champ spécifique.
+     */
+    private void afficherErreur(Label label, String message) {
+        label.setText(message);
+        label.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+    }
+
+    /**
+     * Afficher un message global dans l'interface.
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
         messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
+    }
+
+    /**
+     * Réinitialiser tous les labels d'erreurs.
+     */
+    private void resetErreurs() {
+        nomErrorLabel.setText("");
+        typeErrorLabel.setText("");
+        qteTotErrorLabel.setText("");
+        qteDispErrorLabel.setText("");
+        idLieuErrorLabel.setText("");
+        idFournErrorLabel.setText("");
+        messageLabel.setText("");
+    }
+
+    /**
+     * Fermer la fenêtre après un délai.
+     */
+    private void fermerFenetreApresDelai(long millis) {
+        new javafx.animation.AnimationTimer() {
+            private long startTime = -1;
+
+            @Override
+            public void handle(long now) {
+                if (startTime < 0) startTime = now;
+                else if (now - startTime > millis * 1_000_000) {
+                    Stage stage = (Stage) nomField.getScene().getWindow();
+                    stage.close();
+                    this.stop();
+                }
+            }
+        }.start();
+    }
+
+    public void saveMaterial(ActionEvent actionEvent) {
+    }
+
+    public void goBackToCards(ActionEvent actionEvent) {
+
     }
 }

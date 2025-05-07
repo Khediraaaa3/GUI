@@ -4,60 +4,69 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifMaterielController">
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-    <spacing>15</spacing>
+<VBox xmlns="http://javafx.com/javafx/17.0.6"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.ModifMaterielController"
+      style="-fx-background-color: #f5f7fa;"
+      spacing="15"
+      padding="20">
 
-    <!-- Titre -->
-    <Label text="Modifier un Matériel" style="-fx-font-size: 20px; -fx-font-weight: bold;" VBox.vgrow="NEVER"/>
+    <Label text="Modifier un Matériel" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <!-- ID du Matériel -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="ID:"/>
-        <TextField fx:id="idField" editable="false" HBox.hgrow="ALWAYS"/>
+    <!-- ID -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="ID:" />
+        <TextField fx:id="idField" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <!-- Nom -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Nom:"/>
-        <TextField fx:id="nomField" promptText="Entrez le nom" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Nom:" />
+        <TextField fx:id="nomField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="nomErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- Type -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Type:"/>
-        <TextField fx:id="typeField" promptText="Entrez le type" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Type:" />
+        <TextField fx:id="typeField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="typeErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- Quantité Totale -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Quantité Totale:"/>
-        <TextField fx:id="qteTotField" promptText="Entrez la quantité totale" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Quantité Totale:" />
+        <TextField fx:id="qteTotField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="qteTotErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- Quantité Disponible -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="Quantité Disponible:"/>
-        <TextField fx:id="qteDispField" promptText="Entrez la quantité disponible" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Quantité Disponible:" />
+        <TextField fx:id="qteDispField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="qteDispErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- ID Lieu -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="ID Lieu:"/>
-        <TextField fx:id="idLieuField" promptText="Entrez l'ID du lieu" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="ID Lieu:" />
+        <TextField fx:id="idLieuField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="idLieuErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- ID Fournisseur -->
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Label text="ID Fournisseur:"/>
-        <TextField fx:id="idFournField" promptText="Entrez l'ID du fournisseur" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="ID Fournisseur:" />
+        <TextField fx:id="idFournField" HBox.hgrow="ALWAYS" />
+        <Label fx:id="idFournErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
     <!-- Bouton Modifier -->
-    <Button text="Modifier" onAction="#modifierMateriel" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" VBox.vgrow="NEVER"/>
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Modifier" onAction="#saveMaterial" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+        <Button text="Annuler" onAction="#goBackToCards" style="-fx-background-color: #bdc3c7; -fx-text-fill: black;" />
+    </HBox>
 
-    <!-- Message de Confirmation -->
-    <Label fx:id="messageLabel" text="" style="-fx-font-size: 14px; -fx-text-fill: green;" VBox.vgrow="NEVER"/>
+    <!-- Message de retour -->
+    <Label fx:id="messageLabel" text="" style="-fx-font-size: 16px;" />
 </VBox>

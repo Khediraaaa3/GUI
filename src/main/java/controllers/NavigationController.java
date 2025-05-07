@@ -1,62 +1,41 @@
-// NavigationController.java
-package controllers; // Remplace par ton package réel
+package controllers;
 
-import controllers.MainAppController;
-import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class NavigationController {
 
-    // Méthodes de navigation
     @FXML
-    private VBox floatingMenu;
+    private ScrollPane mainContentArea;
 
-    @FXML
-    private void toggleFloatingMenu() {
-        boolean isVisible = floatingMenu.isVisible();
-        floatingMenu.setVisible(!isVisible);
-
-        TranslateTransition tt = new TranslateTransition(Duration.millis(300), floatingMenu);
-        tt.setFromX(isVisible ? 0 : -250);
-        tt.setToX(isVisible ? -250 : 0);
-        tt.play();
+    public void handleMateriels(ActionEvent event) {
+        loadView("cardsContainer.fxml");
     }
 
-    @FXML
-    private void openMainApp(ActionEvent event) {
+    public void handleFournisseurs(ActionEvent event) {
+        loadView("cardsFournisseur.fxml");
+    }
+
+    public void handleExit(ActionEvent event) {
+        System.exit(0);
+    }
+
+    private void loadView(String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/mainApp.fxml"));
-            Parent root = loader.load();
-            root.setStyle("-fx-background-image: url('" + getClass().getResource("/org/example/demo/background3.jpg") + "');" +
-                    "-fx-background-size: cover;" +
-                    "-fx-background-position: center center;" +
-                    "-fx-background-repeat: no-repeat;");
-
-            Stage stage = new Stage();
-            stage.setTitle("Suppliers Management");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/" + fxmlFile));
+            Parent view = loader.load();
+            mainContentArea.setContent(view);
         } catch (IOException e) {
             e.printStackTrace();
-
         }
-
-
     }
-
 }

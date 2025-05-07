@@ -14,9 +14,6 @@ public class MainApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/navigation.fxml"));
             Parent root = loader.load();
 
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/Navigation.fxml"));
-            //Parent root = loader.load();
-
             Scene scene = new Scene(root, 1100, 700);
             scene.getStylesheets().add(getClass().getResource("/org/example/demo/styles.css").toExternalForm());
 

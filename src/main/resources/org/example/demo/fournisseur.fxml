@@ -3,11 +3,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FournisseurController" stylesheets="@styles.css">
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.FournisseurController"
+      stylesheets="@styles.css">
+
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
@@ -20,8 +23,16 @@
     <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
         <Label text="Search:"/>
         <TextField fx:id="searchField" promptText="Enter name or phone number" HBox.hgrow="ALWAYS"/>
-        <Button text="Search" onAction="#filterSuppliers" styleClass="button-green"/> <!-- Correction ici -->
-        <Button text="Reset" onAction="#resetFilter" styleClass="button-blue"/>
+        <Button text="Search" onAction="#filterSuppliers" styleClass="button-green">
+            <tooltip>
+                <Tooltip text="Filter suppliers by name or phone number"/>
+            </tooltip>
+        </Button>
+        <Button text="Reset" onAction="#resetFilter" styleClass="button-blue">
+            <tooltip>
+                <Tooltip text="Reset search filters"/>
+            </tooltip>
+        </Button>
     </HBox>
 
     <!-- Table to Display Suppliers -->
@@ -34,21 +45,23 @@
 
     <!-- CRUD Buttons -->
     <HBox spacing="10" alignment="CENTER_LEFT" VBox.vgrow="NEVER">
-        <Button text="Add" onAction="#openAddWindow" styleClass="button-green"/>
-        <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue"/>
-        <Button text="Delete" onAction="#deleteSelectedSupplier" styleClass="button-red"/>
+        <Button text="Add" onAction="#openAddWindow" styleClass="button-green">
+            <tooltip>
+                <Tooltip text="Add a new supplier"/>
+            </tooltip>
+        </Button>
+        <Button text="Edit" onAction="#openEditWindow" styleClass="button-blue">
+            <tooltip>
+                <Tooltip text="Edit selected supplier"/>
+            </tooltip>
+        </Button>
+        <Button text="Delete" onAction="#deleteSelectedSupplier" styleClass="button-red">
+            <tooltip>
+                <Tooltip text="Delete selected supplier"/>
+            </tooltip>
+        </Button>
     </HBox>
 
     <!-- Notifications -->
     <Label fx:id="notificationLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
-
-    <!-- Ajout d'un BarChart pour afficher les données dynamiques -->
-    <!--<BarChart fx:id="materialStockChart" title="Material Stock Levels" VBox.vgrow="ALWAYS">
-        <xAxis>
-            <CategoryAxis label="Suppliers" />
-        </xAxis>
-        <yAxis>
-            <NumberAxis label="Stock Level" />
-        </yAxis>
-    </BarChart>-->
 </VBox>

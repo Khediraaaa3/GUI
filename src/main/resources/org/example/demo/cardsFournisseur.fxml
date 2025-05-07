@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<FlowPane xmlns="http://javafx.com/javafx/11.0.1"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="controllers.CardsFournisseurController"
+          fx:id="cardsFournisseur"
+          hgap="20"
+          vgap="20"
+          prefWidth="800"
+          maxWidth="800"
+          alignment="CENTER"
+          style="-fx-background-color: #f4f4f4;">
+
+    <children>
+        <VBox spacing="10">
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+                <TextField fx:id="searchField" promptText="Rechercher un fournisseur..." onAction="#handleSearch"/>
+                <JFXButton text="Rechercher" onAction="#handleSearch"
+                           style="-fx-background-color: #002366; -fx-text-fill: white;"/>
+            </HBox>
+
+            <!-- Conteneur des cartes -->
+            <FlowPane fx:id="fournisseursContainer"
+                      hgap="20"
+                      vgap="20"
+                      prefWidth="800"
+                      maxWidth="800"
+                      alignment="CENTER">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            </FlowPane>
+        </VBox>
+    </children>
+</FlowPane>
