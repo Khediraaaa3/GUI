@@ -141,12 +141,15 @@
     -fx-border-width: 1px;
 }
 
+.search-bar {
+    -fx-padding: 10;
+    -fx-alignment: center-left;
+}
+
 .search-field {
     -fx-prompt-text-fill: gray;
-    -fx-text-fill: #002366;
     -fx-font-size: 14px;
-    -fx-border-color: #002366;
-    -fx-border-radius: 4;
+    -fx-pref-width: 200px;
 }
 
 .search-button {

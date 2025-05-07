@@ -17,8 +17,8 @@
     <children>
         <VBox spacing="10">
             <!-- Barre de recherche -->
-            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-                <TextField fx:id="searchField" promptText="Rechercher un matériau..." onAction="#handleSearch"/>
+            <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+                <TextField fx:id="searchField" promptText="Rechercher..." onAction="#handleSearch"/>
                 <JFXButton text="Rechercher" onAction="#handleSearch"
                            style="-fx-background-color: #002366; -fx-text-fill: white;"/>
             </HBox>

@@ -69,14 +69,9 @@
                         <Insets top="25" right="15" bottom="25" left="15"/>
                     </padding>
 
-                    <!-- Titre dans le sidebar -->
-                    <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="STOCK MANAGEMENT" />
-
                     <Separator style="-fx-background-color: white;" />
 
-                    <!-- Autres boutons du menu -->
-                    <JFXButton fx:id="btnAutresFonctions" styleClass="sidebarItem" text="Autres Fonctions" textFill="WHITE" />
-                    <JFXButton fx:id="btnParametres" styleClass="sidebarItem" text="Paramètres" textFill="WHITE" />
+                    <JFXButton fx:id="btnAutresFonctions" styleClass="sidebarItem" text="STOCK MANAGEMENT" textFill="WHITE" />
 
                     <Region VBox.vgrow="ALWAYS" />
 
