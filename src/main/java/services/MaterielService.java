@@ -22,7 +22,9 @@ public class MaterielService implements interfaceM {
         return m.getNom_mat() != null && !m.getNom_mat().trim().isEmpty()
                 && m.getType_mat() != null && !m.getType_mat().trim().isEmpty()
                 && m.getQte_tot() >= 0
-                && m.getQte_disp() >= 0 && m.getQte_disp() <= m.getQte_tot();
+                && m.getQte_disp() >= 0 && m.getQte_disp() <= m.getQte_tot()
+                && m.getEtat() != null && !m.getEtat().trim().isEmpty()
+                && m.getPrix() >= 0;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class MaterielService implements interfaceM {
             return;
         }
 
-        String sql = "INSERT INTO materiel (nom_mat, type_mat, qte_tot, qte_disp, IdLieu, id_fourn) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO materiel (nom_mat, type_mat, qte_tot, qte_disp, IdLieu, id_fourn, prix, etat) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, m.getNom_mat());
             ps.setString(2, m.getType_mat());
@@ -40,6 +42,8 @@ public class MaterielService implements interfaceM {
             ps.setInt(4, m.getQte_disp());
             ps.setInt(5, m.getIdLieu());
             ps.setInt(6, m.getId_fourn());
+            ps.setDouble(7, m.getPrix());
+            ps.setString(8, m.getEtat());
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout du matériel : " + e.getMessage());
@@ -53,7 +57,7 @@ public class MaterielService implements interfaceM {
             return false;
         }
 
-        String sql = "UPDATE materiel SET nom_mat=?, type_mat=?, qte_tot=?, qte_disp=?, IdLieu=?, id_fourn=? WHERE id_mat=?";
+        String sql = "UPDATE materiel SET nom_mat=?, type_mat=?, qte_tot=?, qte_disp=?, IdLieu=?, id_fourn=?, prix=?, etat=? WHERE id_mat=?";
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, m.getNom_mat());
             ps.setString(2, m.getType_mat());
@@ -61,7 +65,9 @@ public class MaterielService implements interfaceM {
             ps.setInt(4, m.getQte_disp());
             ps.setInt(5, m.getIdLieu());
             ps.setInt(6, m.getId_fourn());
-            ps.setInt(7, m.getId_mat());
+            ps.setDouble(7, m.getPrix());
+            ps.setString(8, m.getEtat());
+            ps.setInt(9, m.getId_mat());
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;
@@ -99,7 +105,9 @@ public class MaterielService implements interfaceM {
                         rs.getInt("qte_tot"),
                         rs.getInt("qte_disp"),
                         rs.getInt("IdLieu"),
-                        rs.getInt("id_fourn")
+                        rs.getInt("id_fourn"),
+                        rs.getDouble("prix"),         // ✅ Nouveau champ
+                        rs.getString("etat")          // ✅ Nouveau champ
                 );
                 listeMateriel.add(m);
             }

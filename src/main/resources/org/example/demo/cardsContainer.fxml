@@ -4,34 +4,78 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <FlowPane xmlns="http://javafx.com/javafx/11.0.1"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controllers.CardsController"
-          fx:id="cardsContainerParent"
-          hgap="20"
-          vgap="20"
           alignment="CENTER"
           style="-fx-background-color: #f4f4f4;">
 
-    <children>
-        <VBox spacing="10">
-            <!-- Barre de recherche -->
-            <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-                <TextField fx:id="searchField" promptText="Rechercher..." onAction="#handleSearch"/>
-                <JFXButton text="Rechercher" onAction="#handleSearch"
-                           style="-fx-background-color: #002366; -fx-text-fill: white;"/>
-            </HBox>
+    <VBox spacing="10" minWidth="800">
+        <!-- Barre de recherche -->
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
+            <TextField fx:id="searchField" promptText="Rechercher..." />
+        </HBox>
 
-            <!-- Conteneur des cartes -->
-            <FlowPane fx:id="cardsContainerInner"
-                      hgap="20"
-                      vgap="20"
-                      alignment="CENTER"
-                      prefWidth="800"
-                      maxWidth="800">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-            </FlowPane>
-        </VBox>
-    </children>
+        <!-- Filtres avancés avec labels fixes -->
+        <GridPane hgap="20" vgap="15" style="-fx-padding: 10;" alignment="CENTER_LEFT">
+
+            <!-- Type -->
+            <VBox GridPane.columnIndex="0" alignment="TOP_CENTER">
+                <Label text="Type"/>
+                <ComboBox fx:id="typeFilter" prefWidth="120"/>
+            </VBox>
+
+            <!-- Prix Min -->
+            <VBox GridPane.columnIndex="1" alignment="TOP_CENTER">
+                <Label text="Prix min"/>
+                <TextField fx:id="minPriceField" prefWidth="100"/>
+            </VBox>
+
+            <!-- Prix Max -->
+            <VBox GridPane.columnIndex="2" alignment="TOP_CENTER">
+                <Label text="Prix max"/>
+                <TextField fx:id="maxPriceField" prefWidth="100"/>
+            </VBox>
+
+            <!-- État -->
+            <VBox GridPane.columnIndex="3" alignment="TOP_CENTER">
+                <Label text="État"/>
+                <ComboBox fx:id="etatFilter" prefWidth="120"/>
+            </VBox>
+
+            <!-- Tri -->
+            <VBox GridPane.columnIndex="4" alignment="TOP_CENTER">
+                <Label text="Trier par"/>
+                <ComboBox fx:id="sortField" prefWidth="150">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Prix croissant"/>
+                            <String fx:value="Prix décroissant"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
+
+            <!-- Bouton Reset -->
+            <VBox GridPane.columnIndex="5" alignment="TOP_CENTER">
+                <Label text=" "/> <!-- Pour aligner verticalement -->
+                <Button fx:id="resetFilterButton"
+                        text="Réinitialiser"
+                        style="-fx-background-color: #e0e0e0; -fx-text-fill: black;"
+                        prefWidth="100"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Conteneur des cartes -->
+        <FlowPane fx:id="cardsContainerInner"
+                  hgap="20"
+                  vgap="20"
+                  alignment="CENTER"
+                  prefWidth="800"
+                  maxWidth="800">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+        </FlowPane>
+    </VBox>
 </FlowPane>

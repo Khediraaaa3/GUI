@@ -1,14 +1,16 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import entities.Materiel;
 import services.MaterielService;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class AjouterMaterielController {
 
+    // Champs existants
     @FXML private TextField nomField;
     @FXML private TextField typeField;
     @FXML private TextField qteTotField;
@@ -16,6 +18,11 @@ public class AjouterMaterielController {
     @FXML private TextField idLieuField;
     @FXML private TextField idFournField;
 
+    // ✨ NOUVEAUX CHAMPS
+    @FXML private TextField prixField;
+    @FXML private ComboBox<String> etatComboBox;
+
+    // Labels d'erreurs existants
     @FXML private Label nomErrorLabel;
     @FXML private Label typeErrorLabel;
     @FXML private Label qteTotErrorLabel;
@@ -24,10 +31,20 @@ public class AjouterMaterielController {
     @FXML private Label idFournErrorLabel;
     @FXML private Label messageLabel;
 
+    // ✨ NOUVEAUX LABELS D'ERREUR
+    @FXML private Label prixErrorLabel;
+    @FXML private Label etatErrorLabel;
+
     private final MaterielService materielService = new MaterielService();
 
+    @FXML
+    public void initialize() {
+        // Remplir le ComboBox avec les états possibles
+        etatComboBox.getItems().addAll("Neuf", "Bon état", "Usé");
+    }
+
     /**
-     * Add a new material with detailed validation and inline errors.
+     * Ajoute un nouveau matériel avec validation complète.
      */
     @FXML
     public void ajouterMateriel() {
@@ -39,8 +56,12 @@ public class AjouterMaterielController {
         String availableStr = qteDispField.getText().trim();
         String lieuIdStr = idLieuField.getText().trim();
         String fournIdStr = idFournField.getText().trim();
+        String prixStr = prixField.getText().trim();
+        String etatSelectionne = etatComboBox.getValue();
 
         boolean isValid = true;
+
+        AtomicBoolean hasError = new AtomicBoolean(false);
 
         if (name.isEmpty()) {
             afficherErreur(nomErrorLabel, "Le nom est requis.");
@@ -53,6 +74,7 @@ public class AjouterMaterielController {
         }
 
         int total = 0, available = 0, lieuId = 0, fournId = 0;
+        double prix = 0.0;
 
         try {
             total = Integer.parseInt(totalStr);
@@ -102,10 +124,26 @@ public class AjouterMaterielController {
             isValid = false;
         }
 
+        try {
+            prix = Double.parseDouble(prixStr);
+            if (prix < 0) {
+                afficherErreur(prixErrorLabel, "Doit être ≥ 0.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            afficherErreur(prixErrorLabel, "Prix invalide.");
+            isValid = false;
+        }
+
+        if (etatSelectionne == null || etatSelectionne.isEmpty()) {
+            afficherErreur(etatErrorLabel, "Veuillez choisir un état.");
+            isValid = false;
+        }
+
         if (!isValid) return;
 
         try {
-            Materiel m = new Materiel(name, type, total, available, lieuId, fournId);
+            Materiel m = new Materiel(name, type, total, available, lieuId, fournId, prix, etatSelectionne);
             materielService.ajouterM(m);
 
             afficherMessage("Matériau ajouté avec succès !", "green");
@@ -119,7 +157,7 @@ public class AjouterMaterielController {
     }
 
     /**
-     * Display an error under a specific label.
+     * Affiche une erreur sous un label spécifique.
      */
     private void afficherErreur(Label label, String message) {
         label.setText(message);
@@ -127,7 +165,7 @@ public class AjouterMaterielController {
     }
 
     /**
-     * Display a styled message in the interface.
+     * Affiche un message stylé.
      */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
@@ -135,7 +173,7 @@ public class AjouterMaterielController {
     }
 
     /**
-     * Reset all error labels.
+     * Réinitialise tous les messages d'erreur.
      */
     private void resetErreurs() {
         nomErrorLabel.setText("");
@@ -144,11 +182,16 @@ public class AjouterMaterielController {
         qteDispErrorLabel.setText("");
         idLieuErrorLabel.setText("");
         idFournErrorLabel.setText("");
+
+        // ✨ Nouveaux labels
+        prixErrorLabel.setText("");
+        etatErrorLabel.setText("");
+
         messageLabel.setText("");
     }
 
     /**
-     * Close the modal window after a delay.
+     * Ferme la fenêtre après un délai.
      */
     private void fermerFenetreApresDelai(long millis) {
         new javafx.animation.AnimationTimer() {
