@@ -2,10 +2,11 @@ package controllers;
 
 import entities.Fournisseur;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import services.FournisseurService;
 
 public class CardViewFournisseurController {
 
@@ -14,23 +15,32 @@ public class CardViewFournisseurController {
     @FXML private VBox detailsContainer;
 
     private Fournisseur fournisseur;
+    private CardsFournisseurController parentController;
 
     public void setData(Fournisseur f) {
         this.fournisseur = f;
 
-        // Charger l’image statique
-        Image image = new Image(getClass().getResourceAsStream("/org/example/demo/supp.png"));
-        imageView.setImage(image);
+        // ✅ Chargement sécurisé de l'image
+        try {
+            Image image = new Image(getClass().getResourceAsStream("/org/example/demo/supp.png"));
+            imageView.setImage(image);
+        } catch (Exception e) {
+            System.err.println("Erreur : Image supp.png introuvable !");
+            e.printStackTrace();
+        }
 
-        // Données du fournisseur
-        nomLabel.setText("Nom : " + fournisseur.getNom_fourn());
-        numLabel.setText("Téléphone : " + fournisseur.getNum_fourn());
-        idLabel.setText(String.valueOf(fournisseur.getId_fourn()));
+        nomLabel.setText("Nom : " + f.getNom_fourn());
+        numLabel.setText("Tél : " + f.getNum_fourn());
+        idLabel.setText("ID : " + f.getId_fourn());
+    }
+
+    public void setParentController(CardsFournisseurController controller) {
+        this.parentController = controller;
     }
 
     @FXML
     private void showDetails() {
-        detailsContainer.setVisible(true);
+        detailsContainer.setVisible(!detailsContainer.isVisible());
     }
 
     @FXML
@@ -40,6 +50,10 @@ public class CardViewFournisseurController {
 
     @FXML
     private void supprimer() {
-        System.out.println("Supprimer : " + fournisseur.getNom_fourn());
+        new FournisseurService().supprimerF(fournisseur.getId_fourn());
+
+        if (parentController != null) {
+            parentController.reloadData(); // Rafraîchir la liste
+        }
     }
 }

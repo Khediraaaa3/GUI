@@ -1,8 +1,8 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import entities.Fournisseur;
 import services.FournisseurService;
@@ -15,11 +15,13 @@ public class AjouterFournisseurController {
     @FXML private Label numErrorLabel;
     @FXML private Label messageLabel;
 
-    private final FournisseurService fournisseurService = new FournisseurService();
+    private final FournisseurService service = new FournisseurService();
+    private CardsFournisseurController parentController; // Référence directe au contrôleur principal
 
-    /**
-     * Add a new supplier with field-specific error messages.
-     */
+    public void setParentController(CardsFournisseurController controller) {
+        this.parentController = controller;
+    }
+
     @FXML
     public void ajouterFournisseur() {
         resetErreurs();
@@ -29,13 +31,11 @@ public class AjouterFournisseurController {
 
         boolean isValid = true;
 
-        // Validation du nom
         if (name.isEmpty()) {
             afficherErreur(nomErrorLabel, "Le nom est requis.");
             isValid = false;
         }
 
-        // Validation du numéro de téléphone
         if (phone.isEmpty()) {
             afficherErreur(numErrorLabel, "Le numéro est requis.");
             isValid = false;
@@ -47,10 +47,14 @@ public class AjouterFournisseurController {
         if (!isValid) return;
 
         try {
-            Fournisseur fournisseur = new Fournisseur(name, phone);
-            fournisseurService.ajouterF(fournisseur);
+            Fournisseur f = new Fournisseur(name, phone);
+            service.ajouterF(f);
 
             afficherMessage("Fournisseur ajouté avec succès !", "green");
+
+            if (parentController != null) {
+                parentController.reloadData(); // Rafraîchir la liste via le contrôleur principal
+            }
 
             fermerFenetreApresDelai(2000);
 
@@ -60,34 +64,22 @@ public class AjouterFournisseurController {
         }
     }
 
-    /**
-     * Display an error message under a specific label.
-     */
     private void afficherErreur(Label label, String message) {
         label.setText(message);
-        label.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+        label.setStyle("-fx-text-fill: red;");
     }
 
-    /**
-     * Display a general message at the bottom of the form.
-     */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
     }
 
-    /**
-     * Clear all error labels.
-     */
     private void resetErreurs() {
         nomErrorLabel.setText("");
         numErrorLabel.setText("");
         messageLabel.setText("");
     }
 
-    /**
-     * Close window after delay.
-     */
     private void fermerFenetreApresDelai(long millis) {
         new javafx.animation.AnimationTimer() {
             private long startTime = -1;
@@ -102,5 +94,11 @@ public class AjouterFournisseurController {
                 }
             }
         }.start();
+    }
+
+    @FXML
+    public void goBackToCards() {
+        Stage stage = (Stage) nomField.getScene().getWindow();
+        stage.close();
     }
 }

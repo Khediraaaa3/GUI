@@ -3,9 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
-
 <?import com.jfoenix.controls.JFXButton?>
-<FlowPane xmlns="http://javafx.com/javafx/11.0.1"
+
+<FlowPane xmlns="http://javafx.com/javafx/17.0.6"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controllers.CardsFournisseurController"
           fx:id="cardsFournisseur"
@@ -18,11 +18,15 @@
 
     <children>
         <VBox spacing="10">
-            <!-- Barre de recherche -->
-            <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-                <TextField fx:id="searchField" promptText="Rechercher..." onAction="#handleSearch"/>
-                <JFXButton text="Rechercher" onAction="#handleSearch"
-                           style="-fx-background-color: #002366; -fx-text-fill: white;"/>
+            <!-- Barre supérieure : Recherche + Bouton Ajouter -->
+            <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;" minWidth="800">
+                <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS" prefWidth="300"/>
+
+                <!-- Bouton Ajouter -->
+                <Button text="Ajouter Fournisseur"
+                        onAction="#handleAddFournisseur"
+                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
+                        HBox.hgrow="NEVER"/>
             </HBox>
 
             <!-- Conteneur des cartes -->
@@ -32,7 +36,7 @@
                       alignment="CENTER"
                       prefWidth="800"
                       maxWidth="800">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/></padding>
             </FlowPane>
         </VBox>
     </children>

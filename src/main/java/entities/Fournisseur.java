@@ -73,7 +73,7 @@ public class Fournisseur {
      */
     public static boolean validatePhoneNumber(String phoneNumber) throws IllegalArgumentException {
         // ✅ Regex pour le format français (ajustable selon vos besoins)
-        String regex = "(\\+33\\s?|0)(6|7)[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}";
+        String regex = "^[-+\\s\\d()]{7,}$";
         if (!phoneNumber.matches(regex)) {
             throw new IllegalArgumentException("Numéro de téléphone invalide : " + phoneNumber);
         }
