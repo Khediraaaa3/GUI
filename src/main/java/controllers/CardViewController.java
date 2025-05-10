@@ -13,8 +13,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import services.MaterielService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class CardViewController {
 
@@ -91,7 +93,22 @@ public class CardViewController {
 
     @FXML
     private void supprimer() {
-        System.out.println("Supprimer matériel : " + materiel.getNom_mat());
-        // Code pour supprimer
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Supprimer Matériel");
+        alert.setHeaderText(null);
+        alert.setContentText("Voulez-vous vraiment supprimer " + materiel.getNom_mat() + " ?");
+
+        ButtonType buttonTypeYes = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeNo = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeYes) {
+            boolean success = new MaterielService().supprimerM(materiel.getId_mat());
+            if (success && parentController != null) {
+                parentController.reloadData();
+            }
+        }
     }
 }
