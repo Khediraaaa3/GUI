@@ -4,9 +4,11 @@ import entities.Materiel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.*;
+import javafx.stage.Stage;
 import services.MaterielService;
 
 import java.io.IOException;
@@ -26,7 +28,8 @@ public class CardsController {
     @FXML private TextField maxPriceField;
     @FXML private ComboBox<String> etatFilter;
     @FXML private ComboBox<String> sortField;
-    @FXML private Button resetFilterButton; // ✅ Bouton ajouté
+    @FXML private Button resetFilterButton;
+    @FXML private Button addButton;
 
     private final MaterielService materielService = new MaterielService();
     private List<Materiel> allMateriaux;
@@ -46,8 +49,12 @@ public class CardsController {
         setupDynamicSearch();
         setupFieldListeners();
 
-        // ✅ Action du bouton Reset
         resetFilterButton.setOnAction(event -> resetFilters());
+    }
+
+    public void reloadData() {
+        allMateriaux = materielService.afficherM(); // Recharge depuis la source
+        loadCards(allMateriaux); // Rafraîchit l'affichage
     }
 
     private void fillFilters() {
@@ -132,16 +139,15 @@ public class CardsController {
         }
     }
 
-    // ✅ Méthode pour réinitialiser tous les filtres
     private void resetFilters() {
-        searchField.setText("");         // Réinitialise la recherche
-        typeFilter.getSelectionModel().clearSelection(); // Désélectionne le type
-        minPriceField.setText("");       // Réinitialise le prix min
-        maxPriceField.setText("");       // Réinitialise le prix max
-        etatFilter.getSelectionModel().clearSelection(); // Désélectionne l'état
-        sortField.getSelectionModel().clearSelection();  // Désélectionne le tri
+        searchField.setText("");
+        typeFilter.getSelectionModel().clearSelection();
+        minPriceField.setText("");
+        maxPriceField.setText("");
+        etatFilter.getSelectionModel().clearSelection();
+        sortField.getSelectionModel().clearSelection();
 
-        loadCards(allMateriaux);         // Recharge toute la liste
+        loadCards(allMateriaux);
     }
 
     private void loadCards(List<Materiel> materiaux) {
@@ -158,5 +164,32 @@ public class CardsController {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void handleAddMaterial() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/ajouterMateriel.fxml"));
+            Pane root = loader.load();
+
+            AjouterMaterielController ajoutController = loader.getController();
+            ajoutController.setCardsController(this); // Passe la référence du contrôleur courant
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter un nouveau matériel");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorDialog("Erreur", "Impossible de charger l'interface d'ajout.");
+        }
+    }
+
+    private void showErrorDialog(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

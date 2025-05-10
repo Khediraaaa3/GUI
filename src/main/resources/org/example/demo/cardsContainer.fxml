@@ -6,19 +6,25 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<FlowPane xmlns="http://javafx.com/javafx/11.0.1"
+<FlowPane xmlns="http://javafx.com/javafx/17.0.6"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controllers.CardsController"
           alignment="CENTER"
           style="-fx-background-color: #f4f4f4;">
 
     <VBox spacing="10" minWidth="800">
-        <!-- Barre de recherche -->
-        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
-            <TextField fx:id="searchField" promptText="Rechercher..." />
+        <!-- Barre supérieure : Recherche + Bouton Ajouter -->
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;" minWidth="800">
+            <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS" prefWidth="300"/>
+
+            <!-- Bouton Ajouter -->
+            <Button fx:id="addButton"
+                    text="Ajouter"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
+                    onAction="#handleAddMaterial"/>
         </HBox>
 
-        <!-- Filtres avancés avec labels fixes -->
+        <!-- Filtres avancés -->
         <GridPane hgap="20" vgap="15" style="-fx-padding: 10;" alignment="CENTER_LEFT">
 
             <!-- Type -->

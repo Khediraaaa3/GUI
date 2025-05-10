@@ -17,35 +17,32 @@ public class AjouterMaterielController {
     @FXML private TextField qteDispField;
     @FXML private TextField idLieuField;
     @FXML private TextField idFournField;
-
-    // ✨ NOUVEAUX CHAMPS
     @FXML private TextField prixField;
     @FXML private ComboBox<String> etatComboBox;
 
-    // Labels d'erreurs existants
+    // Labels d'erreurs
     @FXML private Label nomErrorLabel;
     @FXML private Label typeErrorLabel;
     @FXML private Label qteTotErrorLabel;
     @FXML private Label qteDispErrorLabel;
     @FXML private Label idLieuErrorLabel;
     @FXML private Label idFournErrorLabel;
-    @FXML private Label messageLabel;
-
-    // ✨ NOUVEAUX LABELS D'ERREUR
     @FXML private Label prixErrorLabel;
     @FXML private Label etatErrorLabel;
+    @FXML private Label messageLabel;
 
     private final MaterielService materielService = new MaterielService();
+    private CardsController cardsController; // Référence au contrôleur principal
+
+    public void setCardsController(CardsController controller) {
+        this.cardsController = controller;
+    }
 
     @FXML
     public void initialize() {
-        // Remplir le ComboBox avec les états possibles
         etatComboBox.getItems().addAll("Neuf", "Bon état", "Usé");
     }
 
-    /**
-     * Ajoute un nouveau matériel avec validation complète.
-     */
     @FXML
     public void ajouterMateriel() {
         resetErreurs();
@@ -61,7 +58,8 @@ public class AjouterMaterielController {
 
         boolean isValid = true;
 
-        AtomicBoolean hasError = new AtomicBoolean(false);
+        int total = 0, available = 0, lieuId = 0, fournId = 0;
+        double prix = 0.0;
 
         if (name.isEmpty()) {
             afficherErreur(nomErrorLabel, "Le nom est requis.");
@@ -72,9 +70,6 @@ public class AjouterMaterielController {
             afficherErreur(typeErrorLabel, "Le type est requis.");
             isValid = false;
         }
-
-        int total = 0, available = 0, lieuId = 0, fournId = 0;
-        double prix = 0.0;
 
         try {
             total = Integer.parseInt(totalStr);
@@ -148,6 +143,10 @@ public class AjouterMaterielController {
 
             afficherMessage("Matériau ajouté avec succès !", "green");
 
+            if (cardsController != null) {
+                cardsController.reloadData(); // Rafraîchir la vue principale
+            }
+
             fermerFenetreApresDelai(2000);
 
         } catch (Exception e) {
@@ -156,25 +155,16 @@ public class AjouterMaterielController {
         }
     }
 
-    /**
-     * Affiche une erreur sous un label spécifique.
-     */
     private void afficherErreur(Label label, String message) {
         label.setText(message);
         label.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
     }
 
-    /**
-     * Affiche un message stylé.
-     */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
         messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
     }
 
-    /**
-     * Réinitialise tous les messages d'erreur.
-     */
     private void resetErreurs() {
         nomErrorLabel.setText("");
         typeErrorLabel.setText("");
@@ -182,17 +172,11 @@ public class AjouterMaterielController {
         qteDispErrorLabel.setText("");
         idLieuErrorLabel.setText("");
         idFournErrorLabel.setText("");
-
-        // ✨ Nouveaux labels
         prixErrorLabel.setText("");
         etatErrorLabel.setText("");
-
         messageLabel.setText("");
     }
 
-    /**
-     * Ferme la fenêtre après un délai.
-     */
     private void fermerFenetreApresDelai(long millis) {
         new javafx.animation.AnimationTimer() {
             private long startTime = -1;
@@ -207,5 +191,11 @@ public class AjouterMaterielController {
                 }
             }
         }.start();
+    }
+
+    @FXML
+    public void goBackToCards() {
+        Stage stage = (Stage) nomField.getScene().getWindow();
+        stage.close();
     }
 }
