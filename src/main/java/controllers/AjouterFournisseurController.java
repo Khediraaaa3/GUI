@@ -2,7 +2,6 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import entities.Fournisseur;
 import services.FournisseurService;
@@ -15,13 +14,16 @@ public class AjouterFournisseurController {
     @FXML private Label numErrorLabel;
     @FXML private Label messageLabel;
 
-    private final FournisseurService service = new FournisseurService();
-    private CardsFournisseurController parentController; // Référence directe au contrôleur principal
+    private Cards parentController;
+    private Fournisseur fournisseurEnCours; // Pour modification
 
-    public void setParentController(CardsFournisseurController controller) {
+    public void setCardsController(Cards controller) {
         this.parentController = controller;
     }
 
+    /**
+     * Méthode appelée lors de l’ajout d’un nouveau fournisseur
+     */
     @FXML
     public void ajouterFournisseur() {
         resetErreurs();
@@ -39,7 +41,7 @@ public class AjouterFournisseurController {
         if (phone.isEmpty()) {
             afficherErreur(numErrorLabel, "Le numéro est requis.");
             isValid = false;
-        } else if (!Fournisseur.validatePhoneNumber(phone)) {
+        } else if (!validerNumero(phone)) {
             afficherErreur(numErrorLabel, "Format de téléphone invalide.");
             isValid = false;
         }
@@ -47,39 +49,65 @@ public class AjouterFournisseurController {
         if (!isValid) return;
 
         try {
-            Fournisseur f = new Fournisseur(name, phone);
-            service.ajouterF(f);
-
-            afficherMessage("Fournisseur ajouté avec succès !", "green");
+            if (fournisseurEnCours == null) {
+                // Mode ajout
+                Fournisseur f = new Fournisseur(name, phone);
+                new FournisseurService().ajouterF(f);
+            } else {
+                // Mode modification
+                fournisseurEnCours.setNom_fourn(name);
+                fournisseurEnCours.setNum_fourn(phone);
+                new FournisseurService().modifierF(fournisseurEnCours);
+            }
 
             if (parentController != null) {
-                parentController.reloadData(); // Rafraîchir la liste via le contrôleur principal
+                parentController.reloadData(); // Rafraîchir la liste
             }
 
             fermerFenetreApresDelai(2000);
 
         } catch (Exception e) {
-            afficherMessage("Erreur lors de l'ajout : " + e.getMessage(), "red");
-            e.printStackTrace();
+            afficherMessage("Erreur : " + e.getMessage(), "red");
         }
     }
 
+    /**
+     * Remplit les champs avec les données du fournisseur existant (mode modification)
+     */
+    public void initData(Fournisseur f) {
+        this.fournisseurEnCours = f;
+
+        nomField.setText(f.getNom_fourn());
+        numField.setText(f.getNum_fourn());
+    }
+
+    /**
+     * Valide le format du numéro de téléphone
+     */
+    private boolean validerNumero(String numero) {
+        return numero.matches("\\d{8}"); // Numéro tunisien sur 8 chiffres
+    }
+
+    /**
+     * Affiche un message d'erreur sous un champ
+     */
     private void afficherErreur(Label label, String message) {
         label.setText(message);
         label.setStyle("-fx-text-fill: red;");
     }
 
-    private void afficherMessage(String message, String color) {
-        messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
-    }
-
+    /**
+     * Réinitialise tous les messages d'erreurs
+     */
     private void resetErreurs() {
         nomErrorLabel.setText("");
         numErrorLabel.setText("");
         messageLabel.setText("");
     }
 
+    /**
+     * Ferme la fenêtre après un délai
+     */
     private void fermerFenetreApresDelai(long millis) {
         new javafx.animation.AnimationTimer() {
             private long startTime = -1;
@@ -96,9 +124,18 @@ public class AjouterFournisseurController {
         }.start();
     }
 
+    /**
+     * Bouton Retour → ferme la fenêtre
+     */
     @FXML
     public void goBackToCards() {
         Stage stage = (Stage) nomField.getScene().getWindow();
         stage.close();
     }
+
+    private void afficherMessage(String message, String color) {
+        messageLabel.setText(message);
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 16px; -fx-font-weight: bold;");
+    }
+
 }

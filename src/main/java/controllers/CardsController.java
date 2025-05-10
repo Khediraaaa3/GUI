@@ -19,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public class CardsController {
+public class CardsController implements Cards {
 
     @FXML private FlowPane cardsContainerInner;
     @FXML private TextField searchField;
@@ -37,25 +37,56 @@ public class CardsController {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public void initialize() {
-        if (cardsContainerInner == null) {
-            System.err.println("🚨 cardsContainerInner est NULL !");
-            return;
-        }
+        if (cardsContainerInner == null) return;
 
         allMateriaux = materielService.afficherM();
         loadCards(allMateriaux);
 
-        fillFilters();
-        setupDynamicSearch();
-        setupFieldListeners();
+        setupDynamicSearch(); // Filtres dynamiques
+        fillFilters(); // Remplir les combo boxes
+        setupFieldListeners(); // Pour validation des prix
 
         resetFilterButton.setOnAction(event -> resetFilters());
+        addButton.setOnAction(event -> handleAddMaterial());
     }
 
+    @Override
     public void reloadData() {
-        allMateriaux = materielService.afficherM(); // Recharge depuis la source
-        loadCards(allMateriaux); // Rafraîchit l'affichage
+        allMateriaux = materielService.afficherM();
+        loadCards(allMateriaux);
     }
+
+
+
+
+
+
+        private void loadCards(List<Materiel> materiaux) {
+            cardsContainerInner.getChildren().clear();
+
+            for (Materiel m : materiaux) {
+                try {
+                    // ✅ Chemin absolu depuis resources
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/CardView.fxml"));
+                    Pane card = loader.load();
+                    // ✅ Vérification avant chargement
+                    if (loader.getLocation() == null) {
+                        System.err.println("❌ Erreur : fichier FXML introuvable !");
+                        continue;
+                    }
+
+
+                    CardViewController controller = loader.getController();
+                    controller.setData(m);
+                    controller.setParentController(this);
+
+                    cardsContainerInner.getChildren().add(card);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
     private void fillFilters() {
         typeFilter.setItems(javafx.collections.FXCollections.observableArrayList(
@@ -150,22 +181,6 @@ public class CardsController {
         loadCards(allMateriaux);
     }
 
-    private void loadCards(List<Materiel> materiaux) {
-        cardsContainerInner.getChildren().clear();
-
-        for (Materiel m : materiaux) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/CardView.fxml"));
-                Pane card = loader.load();
-                CardViewController controller = loader.getController();
-                controller.setData(m);
-                cardsContainerInner.getChildren().add(card);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void handleAddMaterial() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/ajouterMateriel.fxml"));
@@ -180,7 +195,6 @@ public class CardsController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
             showErrorDialog("Erreur", "Impossible de charger l'interface d'ajout.");
         }
     }

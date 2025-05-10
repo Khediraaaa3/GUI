@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx/17.0.6"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.AjouterFournisseurController"
-      stylesheets="@styles.css">
+      style="-fx-background-color: #f5f7fa;"
+      spacing="15">
+
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
     </padding>
-    <spacing>15</spacing>
 
-    <!-- Title -->
-    <Label text="Add New Supplier" styleClass="label-title" VBox.vgrow="NEVER"/>
+    <Label text="Ajouter un Fournisseur" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <!-- Form to Add a Supplier -->
-    <GridPane hgap="10" vgap="10" alignment="CENTER">
-        <!-- Name -->
-        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="nomField" promptText="Enter name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <Label fx:id="nomErrorLabel" GridPane.rowIndex="0" GridPane.columnIndex="2" />
-
-        <!-- Phone Number -->
-        <Label text="Phone Number:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="numField" promptText="Enter phone number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label fx:id="numErrorLabel" GridPane.rowIndex="1" GridPane.columnIndex="2" />
-    </GridPane>
-
-    <!-- Add Button -->
-    <HBox spacing="10" alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
-        <Button text="Add" onAction="#ajouterFournisseur" styleClass="button-green"/>
+    <!-- Nom -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Nom:" />
+        <TextField fx:id="nomField" HBox.hgrow="ALWAYS" promptText="Entrez le nom du fournisseur" />
+        <Label fx:id="nomErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
-    <!-- Notifications -->
-    <Label fx:id="messageLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+    <!-- Téléphone -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Téléphone:" />
+        <TextField fx:id="numField" HBox.hgrow="ALWAYS" promptText="Ex: 12345678" />
+        <Label fx:id="numErrorLabel" style="-fx-text-fill: red;" />
+    </HBox>
+
+    <!-- Message global -->
+    <Label fx:id="messageLabel" text="" style="-fx-font-size: 16px;" />
+
+    <!-- Boutons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Ajouter" onAction="#ajouterFournisseur" style="-fx-background-color: #2ecc71; -fx-text-fill: white;" />
+        <Button text="Retour" onAction="#goBackToCards" style="-fx-background-color: #bdc3c7; -fx-text-fill: black;" />
+    </HBox>
 </VBox>

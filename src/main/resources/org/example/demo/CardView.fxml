@@ -19,10 +19,9 @@
         <Label fx:id="nomLabel" style="-fx-font-weight: bold;" />
         <Label fx:id="typeLabel" style="-fx-text-fill: gray;" />
     </VBox>
-
+    <Separator orientation="HORIZONTAL" style="-fx-background-color: transparent;" />
     <!-- Conteneur des détails (caché par défaut) -->
-    <VBox fx:id="detailsContainer" visible="false" managed="false" spacing="5" layoutY="120" minWidth="200">
-        <padding><Insets top="10"/></padding>
+    <VBox fx:id="detailsContainer" visible="false" managed="false" spacing="5" layoutY="150" minWidth="200">
         <Label fx:id="qteTotLabel"/>
         <Label fx:id="qteDispLabel"/>
         <Label fx:id="idLieuLabel"/>

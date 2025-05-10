@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns="http://javafx.com/javafx/17.0.6"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.ModifFournisseurController"
-      stylesheets="@styles.css">
+      style="-fx-background-color: #f5f7fa;"
+      spacing="15">
+
+    <!-- ✅ Cocher ici -->
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
     </padding>
-    <spacing>15</spacing>
 
-    <!-- Titre -->
-    <Label text="Modifier un Fournisseur" styleClass="label-title" VBox.vgrow="NEVER"/>
+    <Label text="Modifier un Fournisseur" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <!-- Champs de Modification -->
-    <GridPane hgap="10" vgap="10" alignment="CENTER">
-
-        <!-- ID -->
-        <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="idField" editable="false" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-        <!-- Nom -->
-        <Label text="Nom:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="nomField" promptText="Entrez le nom" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label fx:id="nomErrorLabel" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-
-        <!-- Numéro -->
-        <Label text="Numéro:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <TextField fx:id="numField" promptText="Entrez le numéro" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        <Label fx:id="numErrorLabel" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
-    </GridPane>
-
-    <!-- Bouton Modifier -->
-    <HBox spacing="10" alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
-        <Button text="Modifier" onAction="#modifierFournisseur" styleClass="button-green"/>
+    <!-- Nom -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Nom:" />
+        <TextField fx:id="nomField" HBox.hgrow="ALWAYS" promptText="Entrez le nom du fournisseur" />
+        <Label fx:id="nomErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
-    <!-- Message de Notification -->
-    <Label fx:id="messageLabel" text="" styleClass="label-message" VBox.vgrow="NEVER"/>
+    <!-- Téléphone -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label text="Téléphone:" />
+        <TextField fx:id="numField" HBox.hgrow="ALWAYS" promptText="Ex: 12345678" />
+        <Label fx:id="numErrorLabel" style="-fx-text-fill: red;" />
+    </HBox>
+
+    <!-- Message global -->
+    <Label fx:id="messageLabel" text="" style="-fx-font-size: 16px;" />
+
+    <!-- Boutons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Enregistrer" onAction="#saveFournisseur" style="-fx-background-color: #f39c12; -fx-text-fill: white;" />
+        <Button text="Annuler" onAction="#goBackToCards" style="-fx-background-color: #bdc3c7; -fx-text-fill: black;" />
+    </HBox>
 </VBox>
