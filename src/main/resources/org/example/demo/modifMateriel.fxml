@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.6"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controllers.ModifMaterielController"
       style="-fx-background-color: #f5f7fa;"
-      spacing="15"
-      padding="20">
+      spacing="15">
+
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
 
     <Label text="Modifier un Matériel" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
-
-    <!-- ID -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label text="ID:" />
-        <TextField fx:id="idField" editable="false" HBox.hgrow="ALWAYS" />
-    </HBox>
 
     <!-- Nom -->
     <HBox alignment="CENTER_LEFT" spacing="10">
@@ -47,23 +44,16 @@
         <Label fx:id="qteDispErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
-    <!-- ID Lieu -->
+    <!-- État -->
     <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label text="ID Lieu:" />
-        <TextField fx:id="idLieuField" HBox.hgrow="ALWAYS" />
-        <Label fx:id="idLieuErrorLabel" style="-fx-text-fill: red;" />
+        <Label text="État:" />
+        <ComboBox fx:id="etatComboBox" prefWidth="150" />
+        <Label fx:id="etatErrorLabel" style="-fx-text-fill: red;" />
     </HBox>
 
-    <!-- ID Fournisseur -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <Label text="ID Fournisseur:" />
-        <TextField fx:id="idFournField" HBox.hgrow="ALWAYS" />
-        <Label fx:id="idFournErrorLabel" style="-fx-text-fill: red;" />
-    </HBox>
-
-    <!-- Bouton Modifier -->
+    <!-- Boutons -->
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Modifier" onAction="#saveMaterial" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+        <Button text="Enregistrer" onAction="#saveMaterial" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
         <Button text="Annuler" onAction="#goBackToCards" style="-fx-background-color: #bdc3c7; -fx-text-fill: black;" />
     </HBox>
 

@@ -9,55 +9,47 @@ import services.MaterielService;
 
 public class ModifMaterielController {
 
-    @FXML private TextField idField;
-    @FXML private TextField nomField;
-    @FXML private TextField typeField;
-    @FXML private TextField qteTotField;
-    @FXML private TextField qteDispField;
-    @FXML private TextField idLieuField;
-    @FXML private TextField idFournField;
+    @FXML private TextField nomField, typeField, qteTotField, qteDispField;
+    @FXML private ComboBox<String> etatComboBox;
 
     @FXML private Label nomErrorLabel;
     @FXML private Label typeErrorLabel;
     @FXML private Label qteTotErrorLabel;
     @FXML private Label qteDispErrorLabel;
-    @FXML private Label idLieuErrorLabel;
-    @FXML private Label idFournErrorLabel;
+    @FXML private Label etatErrorLabel;
     @FXML private Label messageLabel;
 
     private final MaterielService materielService = new MaterielService();
     private Materiel materielSelectionne;
+    private CardsController parentController;
 
-    /**
-     * Initialiser les champs avec les données du matériel sélectionné.
-     */
-    public void initData(Materiel materiel) {
-        this.materielSelectionne = materiel;
+    public void initData(Materiel m) {
+        this.materielSelectionne = m;
 
-        idField.setText(String.valueOf(materiel.getId_mat()));
-        nomField.setText(materiel.getNom_mat());
-        typeField.setText(materiel.getType_mat());
-        qteTotField.setText(String.valueOf(materiel.getQte_tot()));
-        qteDispField.setText(String.valueOf(materiel.getQte_disp()));
-        idLieuField.setText(String.valueOf(materiel.getIdLieu()));
-        idFournField.setText(String.valueOf(materiel.getId_fourn()));
+        // Ne pas afficher l'ID
+        nomField.setText(m.getNom_mat());
+        typeField.setText(m.getType_mat());
+        qteTotField.setText(String.valueOf(m.getQte_tot()));
+        qteDispField.setText(String.valueOf(m.getQte_disp()));
+        etatComboBox.getItems().setAll("Neuf", "Bon état", "Usé");
+        etatComboBox.setValue(m.getEtat());
 
         resetErreurs();
     }
 
-    /**
-     * Modifier le matériel sélectionné.
-     */
+    public void setParentController(CardsController controller) {
+        this.parentController = controller;
+    }
+
     @FXML
-    public void modifierMateriel() {
+    public void saveMaterial(ActionEvent actionEvent) {
         resetErreurs();
 
         String name = nomField.getText().trim();
         String type = typeField.getText().trim();
         String totalStr = qteTotField.getText().trim();
         String dispStr = qteDispField.getText().trim();
-        String lieuStr = idLieuField.getText().trim();
-        String fournStr = idFournField.getText().trim();
+        String etat = etatComboBox.getValue();
 
         boolean isValid = true;
 
@@ -71,23 +63,23 @@ public class ModifMaterielController {
             isValid = false;
         }
 
-        int total = 0, disp = 0, lieu = 0, fourn = 0;
+        int total = 0, disp = 0;
 
         try {
             total = Integer.parseInt(totalStr);
             if (total < 0) {
-                afficherErreur(qteTotErrorLabel, "La quantité doit être ≥ 0.");
+                afficherErreur(qteTotErrorLabel, "Doit être ≥ 0.");
                 isValid = false;
             }
         } catch (NumberFormatException e) {
-            afficherErreur(qteTotErrorLabel, "Quantité totale invalide.");
+            afficherErreur(qteTotErrorLabel, "Nombre invalide.");
             isValid = false;
         }
 
         try {
             disp = Integer.parseInt(dispStr);
             if (disp < 0) {
-                afficherErreur(qteDispErrorLabel, "La quantité doit être ≥ 0.");
+                afficherErreur(qteDispErrorLabel, "Doit être ≥ 0.");
                 isValid = false;
             }
             if (disp > total) {
@@ -95,29 +87,12 @@ public class ModifMaterielController {
                 isValid = false;
             }
         } catch (NumberFormatException e) {
-            afficherErreur(qteDispErrorLabel, "Quantité disponible invalide.");
+            afficherErreur(qteDispErrorLabel, "Nombre invalide.");
             isValid = false;
         }
 
-        try {
-            lieu = Integer.parseInt(lieuStr);
-            if (lieu < 0) {
-                afficherErreur(idLieuErrorLabel, "Doit être ≥ 0.");
-                isValid = false;
-            }
-        } catch (NumberFormatException e) {
-            afficherErreur(idLieuErrorLabel, "ID Lieu doit être un entier.");
-            isValid = false;
-        }
-
-        try {
-            fourn = Integer.parseInt(fournStr);
-            if (fourn < 0) {
-                afficherErreur(idFournErrorLabel, "Doit être ≥ 0.");
-                isValid = false;
-            }
-        } catch (NumberFormatException e) {
-            afficherErreur(idFournErrorLabel, "ID Fournisseur doit être un entier.");
+        if (etat == null || etat.isBlank()) {
+            afficherErreur(etatErrorLabel, "Veuillez choisir un état.");
             isValid = false;
         }
 
@@ -128,12 +103,16 @@ public class ModifMaterielController {
             materielSelectionne.setType_mat(type);
             materielSelectionne.setQte_tot(total);
             materielSelectionne.setQte_disp(disp);
-            materielSelectionne.setIdLieu(lieu);
-            materielSelectionne.setId_fourn(fourn);
+            materielSelectionne.setEtat(etat);
 
             boolean success = materielService.modifierM(materielSelectionne);
             if (success) {
                 afficherMessage("Matériel modifié avec succès !", "green");
+
+                if (parentController != null) {
+                    parentController.reloadData(); // Rafraîchir la liste
+                }
+
                 fermerFenetreApresDelai(2000);
             } else {
                 afficherMessage("Erreur lors de la modification.", "red");
@@ -144,38 +123,31 @@ public class ModifMaterielController {
         }
     }
 
-    /**
-     * Afficher une erreur sous un champ spécifique.
-     */
+    @FXML
+    public void goBackToCards(ActionEvent actionEvent) {
+        Stage stage = (Stage) nomField.getScene().getWindow();
+        stage.close();
+    }
+
     private void afficherErreur(Label label, String message) {
         label.setText(message);
         label.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
     }
 
-    /**
-     * Afficher un message global dans l'interface.
-     */
     private void afficherMessage(String message, String color) {
         messageLabel.setText(message);
-        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
+        messageLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold;");
     }
 
-    /**
-     * Réinitialiser tous les labels d'erreurs.
-     */
     private void resetErreurs() {
         nomErrorLabel.setText("");
         typeErrorLabel.setText("");
         qteTotErrorLabel.setText("");
         qteDispErrorLabel.setText("");
-        idLieuErrorLabel.setText("");
-        idFournErrorLabel.setText("");
+        etatErrorLabel.setText("");
         messageLabel.setText("");
     }
 
-    /**
-     * Fermer la fenêtre après un délai.
-     */
     private void fermerFenetreApresDelai(long millis) {
         new javafx.animation.AnimationTimer() {
             private long startTime = -1;
@@ -190,12 +162,5 @@ public class ModifMaterielController {
                 }
             }
         }.start();
-    }
-
-    public void saveMaterial(ActionEvent actionEvent) {
-    }
-
-    public void goBackToCards(ActionEvent actionEvent) {
-
     }
 }
