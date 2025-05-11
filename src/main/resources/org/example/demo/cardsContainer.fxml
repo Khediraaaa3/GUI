@@ -10,23 +10,38 @@
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controllers.CardsController"
           alignment="CENTER"
-          style="-fx-background-color: #f4f4f4;">
+          style="-fx-background-color: #f4f4f4;"
+          hgap="20"
+          vgap="20"
+          prefWidth="800"
+          maxWidth="800">
 
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Contenu principal -->
     <VBox spacing="10" minWidth="800">
-        <!-- Barre supérieure : Recherche + Bouton Ajouter -->
+        <!-- Barre supérieure : Recherche + Boutons -->
         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;" minWidth="800">
-            <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS" prefWidth="300"/>
+            <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS"/>
 
-            <!-- Bouton Ajouter -->
-            <Button fx:id="addButton"
-                    text="Ajouter"
-                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
-                    onAction="#handleAddMaterial"/>
+            <Button text="Ajouter Matériel"
+                    onAction="#handleAddMaterial"
+                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
+                    HBox.hgrow="NEVER"/>
+
+            <Button text="Exporter"
+                    onAction="#exportMaterialsToExcel"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;"
+                    HBox.hgrow="NEVER"/>
         </HBox>
+
+        <!-- Notification utilisateur -->
+        <Label fx:id="notificationLabel" text="" style="-fx-font-size: 16px;" />
 
         <!-- Filtres avancés -->
         <GridPane hgap="20" vgap="15" style="-fx-padding: 10;" alignment="CENTER_LEFT">
-
             <!-- Type -->
             <VBox GridPane.columnIndex="0" alignment="TOP_CENTER">
                 <Label text="Type"/>
@@ -48,7 +63,15 @@
             <!-- État -->
             <VBox GridPane.columnIndex="3" alignment="TOP_CENTER">
                 <Label text="État"/>
-                <ComboBox fx:id="etatFilter" prefWidth="120"/>
+                <ComboBox fx:id="etatFilter" prefWidth="120">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Neuf"/>
+                            <String fx:value="Bon état"/>
+                            <String fx:value="Usé"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
             </VBox>
 
             <!-- Tri -->

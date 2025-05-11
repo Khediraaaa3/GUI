@@ -3,41 +3,46 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
-<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.ImageView?>
 
 <FlowPane xmlns="http://javafx.com/javafx/17.0.6"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="controllers.CardsFournisseurController"
-          fx:id="cardsFournisseur"
+          alignment="CENTER"
           hgap="20"
           vgap="20"
           prefWidth="800"
           maxWidth="800"
-          alignment="CENTER"
           style="-fx-background-color: #f4f4f4;">
 
-    <children>
-        <VBox spacing="10">
-            <!-- Barre supérieure : Recherche + Bouton Ajouter -->
-            <HBox fx:id="searchBar" alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;" minWidth="800">
-                <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS" prefWidth="300"/>
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+    </padding>
 
-                <!-- Bouton Ajouter -->
-                <Button text="Ajouter Fournisseur"
-                        onAction="#handleAddFournisseur"
-                        style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
-                        HBox.hgrow="NEVER"/>
-            </HBox>
+    <!-- Barre supérieure : Recherche + Boutons Ajouter / Export -->
+    <VBox spacing="10" minWidth="800">
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;" minWidth="800">
+            <TextField fx:id="searchField" promptText="Rechercher..." HBox.hgrow="ALWAYS"/>
+            <Button text="Ajouter Fournisseur"
+                    onAction="#handleAddFournisseur"
+                    style="-fx-background-color: #2ecc71; -fx-text-fill: white;"
+                    HBox.hgrow="NEVER"/>
+            <Button text="Exporter"
+                    onAction="#exportSuppliersToExcel"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;"
+                    HBox.hgrow="NEVER"/>
+        </HBox>
 
-            <!-- Conteneur des cartes -->
-            <FlowPane fx:id="fournisseursContainer"
-                      hgap="20"
-                      vgap="20"
-                      alignment="CENTER"
-                      prefWidth="800"
-                      maxWidth="800">
-                <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/></padding>
-            </FlowPane>
-        </VBox>
-    </children>
+        <!-- Label de notification -->
+        <Label fx:id="notificationLabel" text="" style="-fx-font-size: 16px;" />
+
+        <!-- Conteneur des cartes -->
+        <FlowPane fx:id="fournisseursContainer"
+                  hgap="20"
+                  vgap="20"
+                  alignment="CENTER"
+                  prefWidth="800"
+                  maxWidth="800">
+        </FlowPane>
+    </VBox>
 </FlowPane>

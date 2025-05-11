@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+
+
 public class NavigationController {
 
     @FXML
@@ -34,8 +36,12 @@ public class NavigationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/demo/" + fxmlFile));
             Parent view = loader.load();
             mainContentArea.setContent(view);
+            mainContentArea.setPannable(true);
+            mainContentArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            mainContentArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

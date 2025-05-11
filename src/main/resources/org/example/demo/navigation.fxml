@@ -86,8 +86,9 @@
 
             <!-- Zone centrale dynamique -->
             <center>
-                <ScrollPane fx:id="mainContentArea" fitToWidth="true"
-                            style="-fx-background-color: #f4f4f4;"
+                <ScrollPane fx:id="mainContentArea"
+                            fitToWidth="true"
+                            styleClass="scroll-container"
                             BorderPane.alignment="CENTER">
                 </ScrollPane>
             </center>

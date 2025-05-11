@@ -4,6 +4,9 @@ module org.example.demo {
     requires java.sql;
     requires com.jfoenix;
     requires javafx.controls;
+    requires mysql.connector.j;
+    requires itextpdf;
+    requires org.apache.poi.ooxml;
 
     // Ouvrir les packages nécessaires à JavaFX
     opens test to javafx.fxml;         // Pour le package contenant MainApplication

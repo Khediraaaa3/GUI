@@ -1,16 +1,22 @@
 package controllers;
 
 import entities.Materiel;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import services.MaterielService;
+import utils.export.ExportUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -30,6 +36,7 @@ public class CardsController implements Cards {
     @FXML private ComboBox<String> sortField;
     @FXML private Button resetFilterButton;
     @FXML private Button addButton;
+    @FXML private Label notificationLabel;
 
     private final MaterielService materielService = new MaterielService();
     private List<Materiel> allMateriaux;
@@ -47,7 +54,9 @@ public class CardsController implements Cards {
         setupFieldListeners(); // Pour validation des prix
 
         resetFilterButton.setOnAction(event -> resetFilters());
-        addButton.setOnAction(event -> handleAddMaterial());
+        if (addButton != null) {
+            addButton.setOnAction(event -> handleAddMaterial());
+        }
     }
 
     @Override
@@ -206,4 +215,58 @@ public class CardsController implements Cards {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+    // === Export Excel ===
+    @FXML
+    public void exportMaterialsToExcel() {
+        try {
+            List<Materiel> materiaux = materielService.afficherM();
+
+            // Ouvre le dialogue système
+            Stage currentStage = (Stage) notificationLabel.getScene().getWindow();
+            File selectedFile = chooseExportFile(currentStage, "materiaux_export.xlsx");
+
+            if (selectedFile == null) {
+                displayNotification("Export annulé par l'utilisateur.", "orange");
+                return;
+            }
+
+            // Exporte vers le chemin choisi
+            ExportUtils.exportToExcel(selectedFile.getAbsolutePath(), materiaux);
+            displayNotification("Export généré à : " + selectedFile.getName(), "green");
+
+        } catch (IOException e) {
+            displayNotification("Erreur lors de l'export", "red");
+            System.err.println("Erreur d'export Excel : " + e.getMessage());
+        }
+    }
+
+    private File chooseExportFile(Stage stage, String defaultFileName) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter les matériaux");
+        fileChooser.setInitialFileName(defaultFileName);
+
+        // Filtre optionnel
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"),
+                new FileChooser.ExtensionFilter("Tous les fichiers", "*.*")
+        );
+
+        return fileChooser.showSaveDialog(stage);
+    }
+
+    // === Notifications temporaires ===
+    protected void displayNotification(String message, String color) {
+        if (notificationLabel != null) {
+            notificationLabel.setText(message);
+            notificationLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 16px;");
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(e -> notificationLabel.setText(""));
+            delay.play();
+        } else {
+            System.out.println("[NOTIFICATION] " + message);
+        }
+    }
+
 }

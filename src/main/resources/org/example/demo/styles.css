@@ -168,3 +168,11 @@
     -fx-font-size: 14px;
     -fx-cursor: hand;
 }
+
+.scroll-container {
+    -fx-hbar-policy: NEVER;
+    -fx-vbar-policy: AS_NEEDED;
+    -fx-scroll-duration: 0.1s;
+    -fx-vvalue-decrement: 50;
+    -fx-vvalue-increment: 50;
+}
