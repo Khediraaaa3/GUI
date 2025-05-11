@@ -5,6 +5,7 @@ import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -22,6 +23,7 @@ public class CardsFournisseurController implements Cards {
 
     @FXML private FlowPane fournisseursContainer;
     @FXML private Label notificationLabel;
+    @FXML private TextField searchField; // ✅ Ajout ici
 
     private final FournisseurService fournisseurService = new FournisseurService();
 
@@ -29,12 +31,28 @@ public class CardsFournisseurController implements Cards {
         if (fournisseursContainer == null) return;
 
         reloadData();
+
+        // 🔍 Active la recherche dynamique
+        if (searchField != null) {
+            searchField.textProperty().addListener((obs, oldVal, newVal)-> filterAndReload());
+        }
     }
 
     @Override
     public void reloadData() {
         List<Fournisseur> liste = new FournisseurService().afficherF(); // Charger les données
         loadCards(liste);
+    }
+
+    private void filterAndReload() {
+        String keyword = searchField.getText().toLowerCase();
+        List<Fournisseur> filteredList = fournisseurService.afficherF().stream()
+                .filter(f -> f.getNom_fourn().toLowerCase().contains(keyword) ||
+                        f.getNum_fourn().toLowerCase().contains(keyword))
+                .toList();
+
+        loadCards(filteredList);
+        displayNotification("Résultats filtrés.", "orange");
     }
 
     private void loadCards(List<Fournisseur> fournisseurs) {

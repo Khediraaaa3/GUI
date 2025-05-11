@@ -34,7 +34,7 @@ public class CardViewController {
         this.materiel = m;
 
         try {
-            Image image = new Image("/org/example/demo/mate.png");
+            Image image = new Image(getClass().getResourceAsStream("/org/example/demo/mate.png"));
             if (image.isError()) {
                 System.err.println("🚨 Erreur : mate.png introuvable !");
                 imageView.setImage(null); // Ne pas afficher d'image si problème
